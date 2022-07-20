@@ -20,3 +20,11 @@ spec:
                 name: tekton-dashboard
                 port:
                   number: 9097
+          
+          - path: /pipeline
+            pathType: Prefix
+            backend:
+              service:
+                name: el-github-pull-request
+                port:
+                  number: 8080
