@@ -1,0 +1,65 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: github-pr-pipeline
+spec:
+  params:
+    - name: git-url
+    - name: git-revision
+    - name: commit-sha
+    - name: repository_full_name
+  workspaces:
+    - name: ssh-credentials
+    - name: git-source
+  tasks:
+    - name: set-status
+      taskRef:
+        kind: Task
+        name: github-set-status
+      params:
+        - name: REPO_FULL_NAME
+          value: $(params.repository_full_name)
+        - name: SHA
+          value: $(params.commit-sha)
+        - name: DESCRIPTION
+          value: "Build has started"
+        - name: STATE
+          value: pending
+        - name: TARGET_URL
+          value: "http://localhost:44929/#/namespaces/$(context.pipelineRun.namespace)/pipelineruns/$(context.pipelineRun.name)"
+    - name: fetch-source
+      taskRef:
+        name: git-clone
+      params:
+        - name: url
+          value: $(params.git-url)
+        - name: revision
+          value: $(params.git-revision)
+      workspaces:
+        - name: ssh-directory
+          workspace: ssh-credentials
+        - name: output
+          workspace: git-source
+    - name: ls-directory
+      runAfter: ["fetch-source"]
+      taskRef:
+        name: ls-directory
+      workspaces:
+        - name: git-source
+          workspace: git-source
+  finally:
+    - name: final-set-status
+      taskRef:
+        kind: Task
+        name: github-set-status
+      params:
+        - name: REPO_FULL_NAME
+          value: $(params.repository_full_name)
+        - name: SHA
+          value: $(params.commit-sha)
+        - name: DESCRIPTION
+          value: "Build has started"
+        - name: STATE
+          value: "$(tasks.status)"
+        - name: TARGET_URL
+          value: "http://localhost:44929/#/namespaces/$(context.pipelineRun.namespace)/pipelineruns/$(context.pipelineRun.name)"
