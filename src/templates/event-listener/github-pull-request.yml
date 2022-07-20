@@ -2,6 +2,7 @@ apiVersion: triggers.tekton.dev/v1alpha1
 kind: EventListener
 metadata:
   name: github-pull-request
+  namespace: tekton-pipelines
 spec:
   serviceAccountName: tekton-triggers
   triggers:
