@@ -10,10 +10,10 @@ metadata:
     konghq.com/strip-path: 'true'
 spec:
   rules:
-    - host: tekton-dashboard.owill.com.br
+    - host: tekton-pipelines.vcarrazzone.com.br
       http:
         paths:
-          - path: /pipeline/pullrequest
+          - path: /pullrequest
             pathType: Prefix
             backend:
               service:
