@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tekton-dashboard-server
+  namespace: tekton-pipelines
+  annotations:
+    konghq.com/https-redirect-status-code: '302'
+    kubernetes.io/ingress.class: kong
+    konghq.com/protocols: https
+    konghq.com/strip-path: 'true'
+spec:
+  rules:
+    - host: tekton-dashboard.owill.com.br
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: tekton-dashboard
+                port:
+                  number: 9097
