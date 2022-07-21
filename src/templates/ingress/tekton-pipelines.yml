@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: tekton-dashboard-server
+  name: tekton-pipelines-server
   namespace: tekton-pipelines
   annotations:
     konghq.com/https-redirect-status-code: '302'
@@ -13,10 +13,10 @@ spec:
     - host: tekton-dashboard.owill.com.br
       http:
         paths:
-          - path: /
+          - path: /pipeline/pullrequest
             pathType: Prefix
             backend:
               service:
-                name: tekton-dashboard
+                name: el-github-pull-request
                 port:
-                  number: 9097
+                  number: 8080
