@@ -2,7 +2,7 @@ apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
   name: github-pull-request-pipeline
-  namespace: tekton-pipelines-catalog
+  namespace: tekton-pipelines
 spec:
   params:
     - name: git-url

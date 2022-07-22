@@ -2,7 +2,7 @@ apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerTemplate
 metadata:
   name: github-pull-request-pipeline-template
-  namespace: tekton-pipelines-catalog
+  namespace: tekton-pipelines
 spec:
   params:
     - name: gitrevision

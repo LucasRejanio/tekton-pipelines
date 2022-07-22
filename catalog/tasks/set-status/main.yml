@@ -2,7 +2,7 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: github-set-status
-  namespace: tekton-pipelines-catalog
+  namespace: tekton-pipelines
 spec:
   description: |-
     This task will set the status of the CI job to the specified value along with a link to the specified target URL where developers can follow the progress of the CI job.
