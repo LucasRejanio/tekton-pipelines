@@ -2,7 +2,7 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: ls-directory
-  namespace: tekton-pipelines
+  namespace: tekton-pipelines-catalog
 spec:
   steps:
     - name: ls-directory-la

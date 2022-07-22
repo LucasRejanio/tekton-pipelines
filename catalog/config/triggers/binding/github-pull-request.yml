@@ -2,7 +2,7 @@ apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerBinding
 metadata:
   name: github-pull-request-binding
-  namespace: tekton-pipelines
+  namespace: tekton-pipelines-catalog
 spec:
   params:
     - name: gitrepositoryurl
