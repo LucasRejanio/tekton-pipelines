@@ -4,10 +4,14 @@ metadata:
   name: tekton-dashboard-server
   namespace: tekton-pipelines
   annotations:
-    kubernetes.io/ingress.class: nginx
     nginx.org/basic-auth-secret: "basic-auth"
     nginx.org/basic-auth-realm: "Authentication Required"
 spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+      - tekton-dashboard-dev.owill.com.br
+      secretName: nginx-tls-secret 
   rules:
     - host: tekton-dashboard-dev.owill.com.br
       http:
