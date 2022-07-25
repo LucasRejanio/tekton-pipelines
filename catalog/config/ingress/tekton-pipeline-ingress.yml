@@ -10,7 +10,7 @@ spec:
     - host: tekton-pipeline-dev.owill.com.br
       http:
         paths:
-          - path: /pipeline/pull-request
+          - path: /pull-request
             pathType: Prefix
             backend:
               service:
