@@ -27,7 +27,7 @@ spec:
         - name: STATE
           value: pending
         - name: TARGET_URL
-          value: "http://localhost:44929/#/namespaces/$(context.pipelineRun.namespace)/pipelineruns/$(context.pipelineRun.name)"
+          value: "http://tekton-dashboard-dev.owill.com.br/#/namespaces/$(context.pipelineRun.namespace)/pipelineruns/$(context.pipelineRun.name)"
     - name: fetch-source
       taskRef:
         name: git-clone
@@ -63,4 +63,4 @@ spec:
         - name: STATE
           value: "$(tasks.status)"
         - name: TARGET_URL
-          value: "http://localhost:44929/#/namespaces/$(context.pipelineRun.namespace)/pipelineruns/$(context.pipelineRun.name)"
+          value: "http:///tekton-dashboard-dev.owill.com.br/#/namespaces/$(context.pipelineRun.namespace)/pipelineruns/$(context.pipelineRun.name)"

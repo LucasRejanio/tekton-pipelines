@@ -3,9 +3,9 @@ kind: Ingress
 metadata:
   name: tekton-dashboard-server
   namespace: tekton-pipelines
-  annotations:
-    nginx.org/basic-auth-secret: "basic-auth"
-    nginx.org/basic-auth-realm: "Authentication Required"
+  # annotations:
+  #   nginx.org/basic-auth-secret: "basic-auth"
+  #   nginx.org/basic-auth-realm: "Authentication Required"
 spec:
   ingressClassName: nginx
   tls:
