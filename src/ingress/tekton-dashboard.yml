@@ -7,13 +7,25 @@ metadata:
     kubernetes.io/ingress.class: nginx
 spec:
   rules:
-    - host: tekton-dashboard-dev.owill.com.br
+    - host: tekton-dev.owill.com.br
       http:
         paths:
-          - path: /
+          - path: /dashboard
             pathType: Prefix
             backend:
               service:
                 name: tekton-dashboard
                 port:
                   number: 9097
+    
+    - host: tekton-dev.owill.com.br
+      http:
+        paths:
+          - path: /pipeline
+            pathType: Prefix
+            backend:
+              service:
+                name: tekton-pipeline
+                port:
+                  number: 8080
+
