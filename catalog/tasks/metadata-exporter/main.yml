@@ -1,0 +1,70 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: metadata-exporter
+  namespace: tekton-pipelines
+spec:
+  steps:
+    - name: metadata-exporter
+      image: ubuntu
+      script: |
+        #!/usr/bin/env bash
+
+        version="0.0.1"
+
+        # OPTIONS
+        info() {
+          printf "Metadata Exporter v${version}\n"
+          printf "Usage: $0 [-p <string>] [-s <string>] [-b <string>] [-m <string>] [-e]\n" 1>&2;
+          printf "  You can source the results using process substitution.\n"
+          printf "  Example: set -a; . <($0); set +a\n"
+          printf "Options:\n"
+          printf "  [-p]  Prefix to exported environment variables names.         Example:  -p METADATA_      Default: <empty>\n"
+          printf "  [-s]  Suffix to exported environment variables names.         Example:  -s _LOCAL         Default: <empty>\n"
+          printf "  [-b]  Select from which block begins the variables names.     Example:  -b .parent.child  Default: <empty>\n"
+          printf "  [-m]  Relative path to the metadata file.                     Example:  -m metadata.yaml  Default: ./metadata.yaml\n"
+          printf "  [-e]  Expand environment variables in shell format strings    Example:  -e                Default: false\n"
+          printf "  [-h]  Show the options menu.\n"
+        }
+
+        while getopts "p:s:b:m:ehv" option; do
+          case "${option}" in
+            p)  prefix="${OPTARG}";;
+            s)  suffix="${OPTARG}";;
+            b)  block="${OPTARG}";;
+            m)  metadata="${OPTARG}";;
+            e)  expand="true";;
+            h)  info; exit 0;;
+            v)  printf "v${version}\n"; exit 0;;
+            *)  info; exit 1;;
+          esac
+        done
+        shift $((OPTIND-1))
+
+        # Check Requirements
+        for required_app in "yq" "envsubst" "bash"; do
+          command -v "${required_app}" &> /dev/null
+          [[ $? -ne 0 ]] && printf "Required application ${required_app} not installed. Please install ${required_app} and run me again.\n" && exit 1
+        done
+
+        # Set default values
+        prefix=${prefix:-""}
+        suffix=${suffix:-""}
+        block=${block:-""}
+        metadata=${metadata:-"./metadata.yaml"}
+        expand=${expand:-"false"}
+
+        # If set to expand variables, we'll pipe the result to envsubst
+        [[ "${expand}" == "true" ]] && envrpl="| envsubst"
+
+        # Read from specified block onwards
+        if [[ "${block}" != "" ]]; then
+          yq eval --unwrapScalar=false ''"${block}"'' ${metadata} > metadata_temp.yaml
+          metadata="./metadata_temp.yaml"
+        fi
+
+        # Parse the yaml file into shell like environment variable definition
+        yq eval '.. | select((tag == "!!map" or tag == "!!seq") | not) | "'"${prefix}"'" + (path | join("_") | upcase) + "'"${suffix}"'" + "=" + ("'\''" + . + "'\''")'"${envrpl}"'' ${metadata}
+
+  workspaces:
+    - name: git-source
