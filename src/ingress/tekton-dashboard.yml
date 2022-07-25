@@ -7,7 +7,7 @@ metadata:
     kubernetes.io/ingress.class: nginx
 spec:
   rules:
-    - host: tekton-dashboard.owill.com.br
+    - host: tekton-dashboard-dev.owill.com.br
       http:
         paths:
           - path: /
