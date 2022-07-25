@@ -1,0 +1,14 @@
+application:
+  name: tekton
+  description: |-
+    O Tekton é uma estrutura de código aberto poderosa e flexível para a criação de sistemas CI/CD, 
+    permitindo que os desenvolvedores construam, testem e implantem em provedores de nuvem e sistemas locais. Comece com o Tekton.
+  type: workload
+  owner: dx-squad
+  language: go
+  version: 1.0.0
+
+catalog:
+  lifecycle: production
+  definition:
+    type: website #proxy
