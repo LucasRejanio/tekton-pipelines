@@ -13,7 +13,7 @@ metadata:
     nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required - admin'
 spec:
   rules:
-    - host: tekton-dashsboard-dev.owill.com.br
+    - host: tekton-dashboard-dev.owill.com.br
       http:
         paths:
           - path: /
