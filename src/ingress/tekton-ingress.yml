@@ -10,7 +10,7 @@ spec:
     - host: tekton-dev.owill.com.br
       http:
         paths:
-          - path: /dashboard
+          - path: /
             pathType: Prefix
             backend:
               service:
