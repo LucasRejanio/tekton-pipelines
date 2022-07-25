@@ -1,0 +1,14 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: build-push-ecr
+  namespace: tekton-pipelines
+spec:
+  steps:
+    - name: build
+      image: alpine
+      script: |
+        #!/bin/sh
+        cd /workspace/git-source
+  workspaces:
+    - name: git-source
