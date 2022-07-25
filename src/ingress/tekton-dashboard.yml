@@ -17,10 +17,7 @@ spec:
                 name: tekton-dashboard
                 port:
                   number: 9097
-    
-    - host: tekton-dev.owill.com.br
-      http:
-        paths:
+
           - path: /pipeline
             pathType: Prefix
             backend:
