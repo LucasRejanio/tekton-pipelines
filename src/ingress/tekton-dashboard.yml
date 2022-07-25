@@ -18,11 +18,11 @@ spec:
                 port:
                   number: 9097
 
-          - path: /pipeline
+          - path: /pipeline/pull-request
             pathType: Prefix
             backend:
               service:
-                name: tekton-pipeline
+                name: el-github-pull-request
                 port:
                   number: 8080
 
