@@ -53,7 +53,7 @@ spec:
         prefix=${prefix:-""}
         suffix=${suffix:-""}
         block=${block:-""}
-        metadata=${metadata:-"./metadata.yaml"}
+        metadata=${metadata:-"./metadata.yml"}
         expand=${expand:-"false"}
 
         # If set to expand variables, we'll pipe the result to envsubst
