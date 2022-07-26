@@ -13,10 +13,10 @@ spec:
     - name: ssh-credentials
     - name: git-source
   tasks:
-    - name: set-up-job
+    - name: set-status
       taskRef:
         kind: Task
-        name: set-status
+        name: github-set-status
       params:
         - name: REPO_FULL_NAME
           value: $(params.repository_full_name)
