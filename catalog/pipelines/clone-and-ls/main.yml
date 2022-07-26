@@ -13,7 +13,7 @@ spec:
     - name: ssh-credentials
     - name: git-source
   tasks:
-    - name: set-status
+    - name: set-up-job
       taskRef:
         kind: Task
         name: github-set-status
@@ -28,7 +28,7 @@ spec:
           value: pending
         - name: TARGET_URL
           value: "http://tekton-dashboard-dev.owill.com.br/#/namespaces/$(context.pipelineRun.namespace)/pipelineruns/$(context.pipelineRun.name)"
-    - name: fetch-source
+    - name: set-up-job
       taskRef:
         name: git-clone
       params:
