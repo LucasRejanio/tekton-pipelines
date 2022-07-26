@@ -16,7 +16,7 @@ spec:
     - name: set-up-job
       taskRef:
         kind: Task
-        name: github-set-status
+        name: set-status
       params:
         - name: REPO_FULL_NAME
           value: $(params.repository_full_name)
@@ -28,7 +28,7 @@ spec:
           value: pending
         - name: TARGET_URL
           value: "http://tekton-dashboard-dev.owill.com.br/#/namespaces/$(context.pipelineRun.namespace)/pipelineruns/$(context.pipelineRun.name)"
-    - name: set-up-job
+    - name: fetch-source
       taskRef:
         name: git-clone
       params:
