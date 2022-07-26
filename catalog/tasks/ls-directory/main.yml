@@ -9,6 +9,6 @@ spec:
       image: alpine
       script: |
         #!/bin/sh
-        du -h /workspace/git-source
+        ls -ltr /workspace/git-source
   workspaces:
-    - name: git-source
+    - name: output

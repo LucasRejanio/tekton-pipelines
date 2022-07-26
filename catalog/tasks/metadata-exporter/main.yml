@@ -71,4 +71,4 @@ spec:
         yq eval '.. | select((tag == "!!map" or tag == "!!seq") | not) | "'"${prefix}"'" + (path | join("_") | upcase) + "'"${suffix}"'" + "=" + ("'\''" + . + "'\''")'"${envrpl}"'' ${metadata}
 
   workspaces:
-    - name: git-source
+    - name: output

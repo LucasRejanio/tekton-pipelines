@@ -46,14 +46,14 @@ spec:
       taskRef:
         name: ls-directory
       workspaces:
-        - name: git-source
+        - name: output
           workspace: git-source
     - name: metadata-exporter
       runAfter: ["ls-directory"]
       taskRef:
         name: metadata-exporter
       workspaces:
-        - name: git-source
+        - name: output
           workspace: git-source
   finally:
     - name: final-set-status
