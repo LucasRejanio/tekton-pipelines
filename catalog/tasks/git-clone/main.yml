@@ -116,7 +116,7 @@ spec:
     - name: url
       description: The precise URL that was fetched by this Task.
   steps:
-    - name: clone
+    - name: git-clone
       image: "$(params.gitInitImage)"
       env:
       - name: HOME
