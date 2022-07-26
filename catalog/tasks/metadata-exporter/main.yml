@@ -6,15 +6,16 @@ metadata:
 spec:
   steps:
     - name: metadata-exporter
-      image: ubuntu
+      image: 142401413602.dkr.ecr.sa-east-1.amazonaws.com/ecr-image-default-python:build-3.9
       script: |
         #!/usr/bin/env bash
         
-        apt update -y && apt upgrade -y
-        apt install -y wget
-        apt install -y gettext
-        add-apt-repository ppa:rmescandon/yq -y
-        apt install yq -y
+        printf "Attempting to install dependencies..\n"
+        yum install -y wget gettext > /dev/null 2>&1 || true
+        apk add wget gettext > /dev/null 2>&1 || true
+        apt-get -y install wget gettext > /dev/null 2>&1 || true
+        wget 'https://github.com/mikefarah/yq/releases/download/v4.26.1/yq_linux_amd64' -O /usr/local/bin/yq
+        chmod +x /usr/local/bin/yq
 
         version="0.0.1"
 
