@@ -23,7 +23,7 @@ spec:
     a sparse checkout, pass a list of comma separated directory patterns to
     this Task's sparseCheckoutDirectories param.
   workspaces:
-    - name: output
+    - name: volume
       description: The git repo will be cloned onto the volume backing this Workspace.
     - name: ssh-directory
       optional: true

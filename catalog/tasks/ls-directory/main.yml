@@ -11,4 +11,4 @@ spec:
         #!/bin/sh
         ls -ltr /workspace/git-source
   workspaces:
-    - name: output
+    - name: volume
