@@ -6,7 +6,7 @@ metadata:
 spec:
   steps:
     - name: metadata-exporter
-      image: 142401413602.dkr.ecr.sa-east-1.amazonaws.com/ecr-image-default-python:build-3.9
+      image: alpine
       script: |
         #!/usr/bin/env bash
         
