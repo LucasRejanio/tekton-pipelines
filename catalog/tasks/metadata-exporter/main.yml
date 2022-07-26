@@ -12,6 +12,8 @@ spec:
         apk add bash wget gettext yq
         #!/usr/bin/env bash
 
+        cd /workspace/git-source
+
         version="0.0.1"
 
         # OPTIONS
