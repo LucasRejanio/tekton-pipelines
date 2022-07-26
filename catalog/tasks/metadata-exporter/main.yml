@@ -8,9 +8,9 @@ spec:
     - name: metadata-exporter
       image: alpine
       script: |
-        #!/usr/bin/env bash
         printf "Attempting to install dependencies..\n"
         apk add bash wget gettext yq
+        #!/usr/bin/env bash
 
         version="0.0.1"
 
