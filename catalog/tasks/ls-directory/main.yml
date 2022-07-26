@@ -9,6 +9,6 @@ spec:
       image: alpine
       script: |
         #!/bin/sh
-        ls -ltr /workspace/git-source
+        ls /workspace/volume
   workspaces:
     - name: volume
