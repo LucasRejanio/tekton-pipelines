@@ -6,8 +6,10 @@ metadata:
 spec:
   steps:
     - name: metadata-exporter
-      image: ubuntu
+      image: alpine
       script: |
+        printf "Attempting to install dependencies..\n"
+        apk add bash wget gettext yq
         #!/usr/bin/env bash
 
         version="0.0.1"
@@ -51,7 +53,7 @@ spec:
         prefix=${prefix:-""}
         suffix=${suffix:-""}
         block=${block:-""}
-        metadata=${metadata:-"./metadata.yaml"}
+        metadata=${metadata:-"./metadata.yml"}
         expand=${expand:-"false"}
 
         # If set to expand variables, we'll pipe the result to envsubst
