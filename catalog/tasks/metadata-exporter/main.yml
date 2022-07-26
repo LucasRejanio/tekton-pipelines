@@ -5,13 +5,16 @@ metadata:
   namespace: tekton-pipelines
 spec:
   steps:
-    - name: metadata-exporter
-      image: alpine
+    - image: alpine
+    - name: dependencies
       script: |
         cd /workspace/git-source
-        ls
         printf "Attempting to install dependencies..\n"
         apk add bash wget gettext yq
+        #!/usr/bin/env bash
+
+    - name: script
+      script: |
         #!/usr/bin/env bash
 
         version="0.0.1"
