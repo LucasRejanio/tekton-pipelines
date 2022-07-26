@@ -10,13 +10,12 @@ spec:
       script: |
         #!/usr/bin/env bash
         
-        apt update && apt upgrade
+        apt update -y && apt upgrade -y
         apt install -y wget
         apt install -y gettext
-        sudo add-apt-repository ppa:rmescandon/yq
-        sudo apt update
-        sudo apt install yq -y
-        
+        add-apt-repository ppa:rmescandon/yq -y
+        apt install yq -y
+
         version="0.0.1"
 
         # OPTIONS
