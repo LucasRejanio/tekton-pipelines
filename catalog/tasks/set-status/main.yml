@@ -99,7 +99,7 @@ spec:
     - name: SHEBANG
       value: $(params.SHEBANG)
     image: $(params.IMAGE)
-    name: set-status
+    name: script
     resources: {}
     script: |
       #!$(params.SHEBANG)
