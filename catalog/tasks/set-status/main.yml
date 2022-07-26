@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: set-up-job
+  name: github-set-status
   namespace: tekton-pipelines
 spec:
   description: |-
