@@ -48,6 +48,13 @@ spec:
       workspaces:
         - name: repository
           workspace: git-source
+    - name: build-image
+      runAfter: ["metadata-exporter"]
+      taskRef:
+        name: build-image
+      workspaces:
+        - name: repository
+          workspace: git-source
   finally:
     - name: final-set-status
       taskRef:
