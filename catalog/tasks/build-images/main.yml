@@ -9,6 +9,7 @@ spec:
       image: amazon/aws-cli
       script: |
         cd /workspace/repository
+        yum update
         yum install docker
 
         #!/bin/bash
