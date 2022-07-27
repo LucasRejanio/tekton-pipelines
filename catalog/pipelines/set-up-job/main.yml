@@ -39,21 +39,21 @@ spec:
       workspaces:
         - name: ssh-directory
           workspace: ssh-credentials
-        - name: output
-          workspace: git-source
-    - name: ls-directory
-      runAfter: ["fetch-source"]
-      taskRef:
-        name: ls-directory
-      workspaces:
-        - name: git-source
+        - name: repository
           workspace: git-source
     - name: metadata-exporter
-      runAfter: ["ls-directory"]
+      runAfter: ["fetch-source"]
       taskRef:
         name: metadata-exporter
       workspaces:
-        - name: git-source
+        - name: repository
+          workspace: git-source
+    - name: build-image
+      runAfter: ["metadata-exporter"]
+      taskRef:
+        name: build-image
+      workspaces:
+        - name: repository
           workspace: git-source
   finally:
     - name: final-set-status
