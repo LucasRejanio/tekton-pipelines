@@ -6,7 +6,7 @@ metadata:
 spec:
   steps:
     - name: build
-      image: amazon/aws-cli
+      image: alpine
       script: |
         cd /workspace/repository
         apk add bash docker
