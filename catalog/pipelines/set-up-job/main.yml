@@ -48,7 +48,7 @@ spec:
       workspaces:
         - name: repository
           workspace: git-source
-    - name: build-push
+    - name: build
       runAfter: ["fetch-source"]
       taskRef:
         name: kaniko
@@ -57,7 +57,7 @@ spec:
         workspace: git-source
       params:
       - name: IMAGE
-        value: "tekton"
+        value: "876897421480.dkr.ecr.us-west-1.amazonaws.com/tekton"
   finally:
     - name: final-set-status
       taskRef:
