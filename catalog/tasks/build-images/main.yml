@@ -9,6 +9,7 @@ spec:
       image: amazon/aws-cli
       script: |
         cd /workspace/repository
+        apk add bash docker
 
         #!/bin/bash
 
