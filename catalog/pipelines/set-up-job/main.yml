@@ -48,13 +48,16 @@ spec:
       workspaces:
         - name: repository
           workspace: git-source
-    - name: build-image
-      runAfter: ["metadata-exporter"]
+    - name: build-push
+      runAfter: ["fetch-source"]
       taskRef:
-        name: build-image
+        name: kaniko
       workspaces:
-        - name: repository
-          workspace: git-source
+      - name: source
+        workspace: git-source
+      params:
+      - name: IMAGE
+        value: "tekton"
   finally:
     - name: final-set-status
       taskRef:
