@@ -6,7 +6,9 @@ metadata:
 spec:
   steps:
     - name: build
-      image: alpine
+      image: docker:19.03.8-dind
+      securityContext:
+        privileged: true
       script: |
         cd /workspace/repository
         ls
