@@ -6,11 +6,10 @@ metadata:
 spec:
   steps:
     - name: build
-      image: amazon/aws-cli
+      image: alpine
       script: |
         cd /workspace/repository
-        yum update
-        yum install docker
+        apk add bash docker
 
         #!/bin/bash
 
