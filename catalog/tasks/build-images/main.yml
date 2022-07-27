@@ -9,6 +9,7 @@ spec:
       image: alpine
       script: |
         cd /workspace/repository
+        ls
         apk add bash docker
 
         #!/bin/bash
