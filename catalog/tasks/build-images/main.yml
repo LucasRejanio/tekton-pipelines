@@ -9,19 +9,13 @@ spec:
       image: alpine
       script: |
         cd /workspace/repository
+        ls
         apk add bash docker
 
         #!/bin/bash
 
         echo "----------- Gerando imagem da aplicação -----------"
         docker build -t tekton .
-        if [ $? -eq 0 ]
-        then
-            echo "Imagem da aplicacao gerada com sucesso"
-        else
-            echo "Falha ao gerar imagem da aplicação"
-            exit 1
-        fi
 
   workspaces:
     - name: repository
