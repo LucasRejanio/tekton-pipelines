@@ -69,7 +69,7 @@ spec:
         fi
 
         # Parse the yaml file into shell like environment variable definition
-        yq eval '.. | select((tag == "!!map" or tag == "!!seq") | not) | "'"${prefix}"'" + (path | join("_") | upcase) + "'"${suffix}"'" + "=" + ("'\''" + . + "'\''")'"${envrpl}"'' ${metadata}
+        yq eval '.. | select((tag == "!!map" or tag == "!!seq") | not) | "'"${prefix}"'" + (path | join("_") | upcase) + "'"${suffix}"'" + "=" + ("'\''" + . + "'\''")'"${envrpl}"'' ${metadata} > .env
 
   workspaces:
     - name: repository
