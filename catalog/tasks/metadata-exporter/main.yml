@@ -8,8 +8,8 @@ spec:
     - name: metadata-exporter
       image: alpine
       script: |
-        cd /workspace/repository
-        ls -la
+        cd /workspace/repository && ls -la
+        
         printf "Attempting to install dependencies..\n"
         apk add bash wget gettext yq
 
