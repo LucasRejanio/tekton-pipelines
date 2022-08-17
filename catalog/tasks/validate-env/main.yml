@@ -1,0 +1,19 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: validate-env
+  namespace: tekton-pipelines
+spec:
+  steps:
+    - name: metadata-exporter
+      image: alpine
+      script: |
+        cd /workspace/repository
+        ls -la
+
+        #!/usr/bin/env bash
+        cat .env
+        env
+
+  workspaces:
+    - name: repository
