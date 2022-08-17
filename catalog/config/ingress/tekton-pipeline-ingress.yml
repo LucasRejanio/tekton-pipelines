@@ -17,4 +17,11 @@ spec:
                 name: el-github-pull-request
                 port:
                   number: 8080
+          - path: /bitbucket-build-java
+            pathType: Prefix
+            backend:
+              service:
+                name: el-bitbucket-build-java
+                port:
+                  number: 8080
 
