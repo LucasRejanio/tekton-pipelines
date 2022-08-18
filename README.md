@@ -47,7 +47,3 @@ stringData:
   secretToken: ""
 EOF
 ```
-
-```sh
-bf8a3f9e3f9a44577
-```
