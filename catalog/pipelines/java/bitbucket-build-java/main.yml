@@ -27,7 +27,7 @@ spec:
           workspace: ssh-directory
     - name: build
       runAfter: 
-        - tests
+        - setup
       taskRef:
         name: kaniko
       params:
