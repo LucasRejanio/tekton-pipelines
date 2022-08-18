@@ -236,12 +236,6 @@ spec:
         printf "%s" "${RESULT_SHA}" > "$(results.commit.path)"
         printf "%s" "${PARAM_URL}" > "$(results.url.path)"
 
-      workspaces:
-        - name: repository
-          workspace: repository
-        - name: ssh-directory
-          workspace: ssh-directory
-
     - name: metadata-exporter
       image: alpine
       script: |
@@ -307,9 +301,3 @@ spec:
 
         # Parse the yaml file into shell like environment variable definition
         yq eval '.. | select((tag == "!!map" or tag == "!!seq") | not) | "'"${prefix}"'" + (path | join("_") | upcase) + "'"${suffix}"'" + "=" + ("'\''" + . + "'\''")'"${envrpl}"'' ${metadata} > .env
-
-      workspaces:
-        - name: repository
-          workspace: repository
-        - name: ssh-directory
-          workspace: ssh-directory
