@@ -3,13 +3,13 @@ kind: Task
 metadata:
   name: mvm-verify
   namespace: tekton-pipelines
+
 spec:
   steps:
-    steps:
-      - image: 142401413602.dkr.ecr.sa-east-1.amazonaws.com/ecr-image-default-maven:build-17
-        name: mvn-verify
-        script: mvn verify
-        workingDir: "$(workspaces.repository.path)"
+    - image: 142401413602.dkr.ecr.sa-east-1.amazonaws.com/ecr-image-default-maven:build-17
+      name: mvn-verify
+      script: mvn verify
+      workingDir: "$(workspaces.repository.path)"
 
   workspaces:
     - name: repository
