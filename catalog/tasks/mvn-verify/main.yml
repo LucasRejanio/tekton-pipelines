@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: mvm-verify
+  name: mvn-verify
   namespace: tekton-pipelines
 
 spec:

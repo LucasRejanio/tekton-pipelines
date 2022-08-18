@@ -32,7 +32,7 @@ spec:
       runAfter:
         - setup
       taskRef:
-        name: mvm-verify
+        name: mvn-verify
       workspaces:
         - name: repository
           workspace: repository
