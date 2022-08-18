@@ -3,6 +3,7 @@ kind: Pipeline
 metadata:
   name: bitbucket-test-java
   namespace: tekton-pipelines
+
 spec:
   params:
     - name: git-url
@@ -11,6 +12,7 @@ spec:
     - name: repository
     - name: artifacts
     - name: ssh-directory
+
   tasks:
     - name: setup
       params:
@@ -25,36 +27,12 @@ spec:
           workspace: repository
         - name: ssh-directory
           workspace: ssh-directory
-    - name: validate-env
-      runAfter: 
-        - setup
-      taskRef:
-        name: validate-env
-      workspaces:
-        - name: repository
-          workspace: repository
+
     - name: tests
       runAfter:
-        - validate-env
-      taskSpec:
-        workspaces:
-          - name: repository
-        steps:
-          - image: 142401413602.dkr.ecr.sa-east-1.amazonaws.com/ecr-image-default-maven:build-17
-            name: mvn-verify
-            script: mvn verify
-            workingDir: "$(workspaces.repository.path)"
+        - setup
+      taskRef:
+        name: mvm-verify
       workspaces:
         - name: repository
-          workspace: repository
-    - name: build
-      runAfter: 
-        - tests
-      taskRef:
-        name: kaniko
-      params:
-        - name: IMAGE
-          value: "876897421480.dkr.ecr.us-west-1.amazonaws.com/tekton"
-      workspaces:
-        - name: source
           workspace: repository
