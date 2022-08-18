@@ -1,0 +1,55 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: bitbucket-build-java
+  namespace: tekton-pipelines
+status:
+  address:
+    url: http://el-bitbucket-build-java.tekton-pipelines.svc.cluster.local:8080
+  conditions:
+    - lastTransitionTime: '2022-08-11T14:39:41Z'
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: 'True'
+      type: Available
+    - lastTransitionTime: '2022-08-18T00:37:13Z'
+      message: Deployment exists
+      status: 'True'
+      type: Deployment
+    - lastTransitionTime: '2022-08-18T00:37:13Z'
+      message: >-
+        ReplicaSet "el-bitbucket-build-java-86b6f78c5" has timed out
+        progressing.
+      reason: ProgressDeadlineExceeded
+      status: 'False'
+      type: Progressing
+    - lastTransitionTime: '2022-08-18T00:37:13Z'
+      message: >-
+        Condition Progressing has status: False with message: ReplicaSet
+        "el-bitbucket-build-java-86b6f78c5" has timed out progressing.
+      status: 'False'
+      type: Ready
+    - lastTransitionTime: '2022-08-18T00:37:13Z'
+      message: >-
+        pods "el-bitbucket-build-java-86b6f78c5-" is forbidden: error looking up
+        service account tekton-pipelines/tekton-tutorial: serviceaccount
+        "tekton-tutorial" not found
+      reason: FailedCreate
+      status: 'True'
+      type: ReplicaFailure
+    - lastTransitionTime: '2022-08-18T00:37:13Z'
+      message: Service exists
+      status: 'True'
+      type: Service
+  configuration:
+    generatedName: el-bitbucket-build-java
+spec:
+  namespaceSelector: {}
+  resources: {}
+  serviceAccountName: tekton-tutorial
+  triggers:
+    - bindings:
+        - kind: TriggerBinding
+          ref: tekton-tutorial
+      template:
+        ref: tekton-tutorial
