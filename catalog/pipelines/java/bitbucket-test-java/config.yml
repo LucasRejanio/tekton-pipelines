@@ -1,0 +1,73 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: bitbucket-test-java
+  namespace: tekton-pipelines
+spec:
+  params:
+    - name: gitrevision
+      description: The git revision
+    - name: gitrepositoryurl
+      description: The git repository url
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: getting-started-pipeline-run-
+        namespace: tekton-pipelines
+      spec:
+        params:
+          - name: git-url
+            value: $(tt.params.gitrepositoryurl)
+          - name: git-revision
+            value: $(tt.params.gitrevision)
+        workspaces:
+          - name: repository
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 1Gi
+          - name: artifacts
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 1Gi
+          - name: ssh-directory
+            secret:
+              secretName: my-ssh-credentials
+        serviceAccountName: tekton-triggers-webhook
+        pipelineRef:
+          name: bitbucket-test-java
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: bitbucket-test-java
+  namespace: tekton-pipelines
+spec:
+  params:
+    - name: gitrevision
+      value: $(body.pullrequest.source.branch.name)
+    - name: namespace
+      value: tekton-pipelines
+    - name: gitrepositoryurl
+      value: git@bitbucket.org:$(body.repository.full_name)
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: bitbucket-test-java
+  namespace: tekton-pipelines
+spec:
+  serviceAccountName: tekton-triggers
+  triggers:
+    - bindings:
+      - ref: bitbucket-test-java
+      template:
+        ref: bitbucket-test-java

@@ -1,0 +1,38 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: bitbucket-build-java
+  namespace: tekton-pipelines
+spec:
+  params:
+    - name: git-url
+    - name: git-revision
+  workspaces:
+    - name: repository
+    - name: artifacts
+    - name: ssh-directory
+  tasks:
+    - name: setup
+      params:
+        - name: url
+          value: $(params.git-url)
+        - name: revision
+          value: $(params.git-revision)
+      taskRef:
+        name: setup
+      workspaces:
+        - name: repository
+          workspace: repository
+        - name: ssh-directory
+          workspace: ssh-directory
+    - name: build
+      runAfter: 
+        - tests
+      taskRef:
+        name: kaniko
+      params:
+        - name: IMAGE
+          value: "876897421480.dkr.ecr.us-west-1.amazonaws.com/tekton"
+      workspaces:
+        - name: source
+          workspace: repository

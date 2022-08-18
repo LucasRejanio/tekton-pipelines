@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: bitbucket-build-java
+  name: bitbucket-test-java
   namespace: tekton-pipelines
 spec:
   params:
