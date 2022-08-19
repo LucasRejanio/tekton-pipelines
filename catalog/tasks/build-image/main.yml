@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: docker-build
+  name: build-image
   namespace: tekton-pipelines
 spec:
   params:
@@ -52,7 +52,7 @@ spec:
       name: build-and-push-ecr
       script: |
         printf "Instalando dependencias..\n"
-        apk add bash buildah
+        apk add bash buildah podman ca-certificates
 
         #!/bin/bash
         cd /workspace/repository && source .env
