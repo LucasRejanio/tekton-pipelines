@@ -5,7 +5,7 @@ metadata:
   namespace: tekton-pipelines
 spec:
   params:
-    - name: revision
+    - name: destination-branch
       description: Repository branch.
       type: string
 
@@ -57,7 +57,9 @@ spec:
         #!/bin/bash
         cd /workspace/repository && source .env
 
-        BITBUCKET_BRANCH="$(params.revision)"
+
+        echo "----------- Validando ambiente -----------"
+        BITBUCKET_BRANCH="$(params.destination-branch)"
         
         case ${BITBUCKET_BRANCH} in
           develop)
