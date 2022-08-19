@@ -26,15 +26,3 @@ spec:
           workspace: repository
         - name: ssh-directory
           workspace: ssh-directory
-
-    - name: build
-      runAfter: 
-        - setup
-      taskRef:
-        name: kaniko
-      params:
-        - name: IMAGE
-          value: "876897421480.dkr.ecr.us-west-1.amazonaws.com/tekton"
-      workspaces:
-        - name: source
-          workspace: repository

@@ -43,7 +43,7 @@ spec:
       runAfter:
         - setup
       taskRef:
-        name: docker-build
+        name: build-image
       workspaces:
         - name: repository
           workspace: repository
