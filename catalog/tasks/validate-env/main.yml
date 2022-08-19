@@ -4,6 +4,9 @@ metadata:
   name: validate-env
   namespace: tekton-pipelines
 spec:
+  workspaces:
+    - name: repository
+
   steps:
     - name: validate-env
       image: alpine
@@ -13,6 +16,3 @@ spec:
         #!/usr/bin/env bash
         cat .env
         env
-
-  workspaces:
-    - name: repository

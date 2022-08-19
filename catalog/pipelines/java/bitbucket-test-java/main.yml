@@ -35,3 +35,12 @@ spec:
       workspaces:
         - name: repository
           workspace: repository
+
+    - name: build
+      runAfter:
+        - setup
+      taskRef:
+        name: build-and-push-ecr
+      workspaces:
+        - name: repository
+          workspace: repository
