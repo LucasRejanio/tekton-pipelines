@@ -26,7 +26,7 @@ spec:
 
         echo "----------- Buscando repositório no ECR -----------"
         AWS_REGION=us-west-1
-        AWS_ACCOUNT=142401413602
+        AWS_ACCOUNT=876897421480
         ECR_REPO_NAME=ecr-$APPLICATION_NAME
 
         aws ecr describe-repositories --region $AWS_REGION --no-cli-pager --query "repositories[?repositoryName==\`$ECR_REPO_NAME\`][repositoryName]" --output text | grep -q "$ECR_REPO_NAME"
