@@ -10,7 +10,7 @@ spec:
       script: |
         cd /workspace/repository && ls -la
         
-        printf "Attempting to install dependencies..\n"
+        printf "Instalando dependencias..\n"
         apk add bash wget gettext yq
 
         #!/usr/bin/env bash

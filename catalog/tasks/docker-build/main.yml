@@ -46,11 +46,14 @@ spec:
             [ $? -ne 0 ] && echo "Erro ao criar o repositório $ECR_REPO_NAME" && exit
         fi
 
-    - image: buildah/buildah:latest 
+    - image: alpine
       securityContext:
         privileged: true
       name: build-and-push-ecr
       script: |
+        printf "Instalando dependencias..\n"
+        apk add bash buildah
+
         #!/bin/bash
         cd /workspace/repository && source .env
 
