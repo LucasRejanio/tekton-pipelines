@@ -27,15 +27,16 @@ spec:
         echo "----------- Buscando repositório no ECR -----------"
         AWS_REGION=us-west-1
         AWS_ACCOUNT=142401413602
+        ECR_REPO_NAME=ecr-$APPLICATION_NAME
 
-        aws ecr describe-repositories --region $AWS_REGION --no-cli-pager --query "repositories[?repositoryName==\`$IMAGE_ECR_REPO_NAME\`][repositoryName]" --output text | grep -q "$IMAGE_ECR_REPO_NAME"
+        aws ecr describe-repositories --region $AWS_REGION --no-cli-pager --query "repositories[?repositoryName==\`$ECR_REPO_NAME\`][repositoryName]" --output text | grep -q "$ECR_REPO_NAME"
 
         if [ $? -eq 0 ]
         then
             echo "Repositório ECR encontrado com sucesso!"
         else
             echo "Repositório ECR não encontrado.."
-            echo "Criando repositório $IMAGE_ECR_REPO_NAME"
-            aws ecr create-repository --region $AWS_REGION --repository-name ${IMAGE_ECR_REPO_NAME} --no-cli-pager
-            [ $? -ne 0 ] && echo "Erro ao criar o repositório $IMAGE_ECR_REPO_NAME" && exit
+            echo "Criando repositório $ECR_REPO_NAME"
+            aws ecr create-repository --region $AWS_REGION --repository-name ${ECR_REPO_NAME} --no-cli-pager
+            [ $? -ne 0 ] && echo "Erro ao criar o repositório $ECR_REPO_NAME" && exit
         fi
