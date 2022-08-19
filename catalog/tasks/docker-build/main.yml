@@ -8,7 +8,7 @@ spec:
     - name: repository
 
   steps:
-    - image: 142401413602.dkr.ecr.sa-east-1.amazonaws.com/ecr-image-default-node:build-16
+    - image: 142401413602.dkr.ecr.sa-east-1.amazonaws.com/ecr-image-default-aws-cli:build
       name: verify-repository
       script: |
         #!/bin/bash
@@ -20,25 +20,22 @@ spec:
             echo "Não encontrado a váriavel APPLICATION_NAME"
             exit 1
         else
+            echo "Metadata validado."
             export APPLICATION_NAME=$(echo $APPLICATION_NAME | sed 's/_/-/g')
         fi
 
-        echo "----------- Autenticando com a AWS -----------"
-        AWS_REGION=sa-east-1
+        echo "----------- Buscando repositório no ECR -----------"
+        AWS_REGION=us-west-1
         AWS_ACCOUNT=142401413602
 
-        ECR_URI=$AWS_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com
-        aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_URI
-
-        echo "----------- Buscando repositório no ECR -----------"
-        aws ecr describe-repositories --region $AWS_REGION --no-cli-pager --query "repositories[?repositoryName==\`$ECR_REPO_NAME\`][repositoryName]" --output text | grep -q "$ECR_REPO_NAME"
+        aws ecr describe-repositories --region $AWS_REGION --no-cli-pager --query "repositories[?repositoryName==\`$IMAGE_ECR_REPO_NAME\`][repositoryName]" --output text | grep -q "$IMAGE_ECR_REPO_NAME"
 
         if [ $? -eq 0 ]
         then
             echo "Repositório ECR encontrado com sucesso!"
         else
             echo "Repositório ECR não encontrado.."
-            echo "Criando repositório $ECR_REPO_NAME"
-            aws ecr create-repository --region $AWS_REGION --repository-name ${ECR_REPO_NAME} --no-cli-pager
-            [ $? -ne 0 ] && echo "Erro ao criar o repositório $ECR_REPO_NAME" && exit
+            echo "Criando repositório $IMAGE_ECR_REPO_NAME"
+            aws ecr create-repository --region $AWS_REGION --repository-name ${IMAGE_ECR_REPO_NAME} --no-cli-pager
+            [ $? -ne 0 ] && echo "Erro ao criar o repositório $IMAGE_ECR_REPO_NAME" && exit
         fi
