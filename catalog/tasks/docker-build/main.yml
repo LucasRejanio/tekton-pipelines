@@ -46,7 +46,7 @@ spec:
             [ $? -ne 0 ] && echo "Erro ao criar o repositório $ECR_REPO_NAME" && exit
         fi
 
-    - image: docker
+    - image: 142401413602.dkr.ecr.sa-east-1.amazonaws.com/ecr-image-default-node:build-16
       name: build-and-push-ecr
       script: |
         #!/bin/bash
