@@ -1,9 +1,14 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: build-and-push-ecr
+  name: docker-build
   namespace: tekton-pipelines
 spec:
+  params:
+    - name: revision
+      description: Repository branch.
+      type: string
+
   workspaces:
     - name: repository
 
@@ -13,6 +18,61 @@ spec:
       script: |
         #!/bin/bash
         cd /workspace/repository && source .env
+
+        BITBUCKET_BRANCH="$(params.branch)"
+        
+        case ${BITBUCKET_BRANCH} in
+          develop)
+              #Nome do projeto para chavear o redeploy
+              if [ -z "${PROJECT_NAME}" ]; then
+                  echo "Project: Default"
+                  PROJECT_NAME="c-4qx7l:p-7mtnw"
+              else
+                  echo "Project: System"
+                  PROJECT_NAME="c-4qx7l:p-9c5f6"
+              fi
+              export AMBIENTE=dev
+              export ENV=development
+              export RANCHER_URL="https://rancher-ayfrai-dev.owill.com.br/v3/project/$PROJECT_NAME/workloads/$TYPE_SERVICE:$NAMESPACE_NAME:$APP_NAME?action=redeploy"
+              export RANCHER_HEADER="rancher-bf8040-dev.souwill.com.br"
+              export RANCHER_TOKEN=$RANCHER_TOKEN_DEV
+              echo "Identificado ambiente de Desenvolvimento"
+          ;;
+          staging)
+              if [ -z "${PROJECT_NAME}" ]; then
+                  echo "Project: Default"
+                  PROJECT_NAME="c-6s8hg:p-cz9wv"
+              else
+                  echo "Project: System"
+                  PROJECT_NAME="c-6s8hg:p-8cvcw"
+              fi
+              export AMBIENTE=stg
+              export ENV=staging
+              export RANCHER_URL="https://ec2-52-22-153-141.compute-1.amazonaws.com/v3/project/$PROJECT_NAME/workloads/$TYPE_SERVICE:$NAMESPACE_NAME:$APP_NAME?action=redeploy"
+              export RANCHER_HEADER="ec2-52-22-153-141.compute-1.amazonaws.com"
+              export RANCHER_TOKEN=$RANCHER_TOKEN_STG
+              echo "Identificado ambiente de Staging"
+          ;;
+          master|main)
+              if [ -z "${PROJECT_NAME}" ]; then
+                  echo "Project: Default"
+                  PROJECT_NAME="c-pjw6c:p-s5lzb"
+              else
+                  echo "Project: System"
+                  PROJECT_NAME="c-pjw6c:p-ww9d7"
+              fi
+              export AMBIENTE=prd
+              export ENV=production
+              export RANCHER_URL="https://ec2-54-94-74-253.sa-east-1.compute.amazonaws.com/v3/project/$PROJECT_NAME/workloads/$TYPE_SERVICE:$NAMESPACE_NAME:$APP_NAME?action=redeploy"
+              export RANCHER_HEADER="ec2-54-94-74-253.sa-east-1.compute.amazonaws.com"
+              export RANCHER_TOKEN=$RANCHER_TOKEN_PRD
+              echo "Identificado ambiente de Produção"
+          ;;
+          *)
+              echo "Ambiente não identificado"
+              exit 1
+          ;;
+        esac
 
         echo "----------- Validando dados do metadata -----------"
         #Replace APPLICATION_NAME
@@ -39,4 +99,39 @@ spec:
             echo "Criando repositório $ECR_REPO_NAME"
             aws ecr create-repository --region $AWS_REGION --repository-name ${ECR_REPO_NAME} --no-cli-pager && exit 0
             [ $? -ne 0 ] && echo "Erro ao criar o repositório $ECR_REPO_NAME" && exit
+        fi
+
+    - image: 142401413602.dkr.ecr.sa-east-1.amazonaws.com/ecr-image-default-aws-cli:build
+      name: build-and-push-ecr
+      script: |
+        #!/bin/bash
+        cd /workspace/repository && source .env
+
+        echo "----------- Validando dados do metadata -----------"
+        #Replace APPLICATION_NAME
+        if [ -z "${APPLICATION_NAME}" ]; then
+            echo "Não encontrado a váriavel APPLICATION_NAME"
+            exit 1
+        else
+            echo "Metadata validado."
+            export APPLICATION_NAME=$(echo $APPLICATION_NAME | sed 's/_/-/g')
+        fi
+
+        echo "----------- Gerando imagem da aplicação -----------"
+        AWS_REGION=us-west-1
+        AWS_ACCOUNT=876897421480
+        ECR_REPO_NAME=ecr-$APPLICATION_NAME
+
+        APP_ECR_URI=$AWS_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO_NAME
+        docker build . --build-arg BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER --build-arg ENV=$ENV \
+            -t $APP_ECR_URI:$AMBIENTE \
+            -t $APP_ECR_URI:$AMBIENTE-$BITBUCKET_COMMIT \
+            -t $APP_ECR_URI:$AMBIENTE-$BITBUCKET_BUILD_NUMBER
+        if [ $? -eq 0 ]
+        then
+            echo "Imagem da aplicacao gerada com sucesso"
+        else
+            echo "Falha ao gerar imagem da aplicação"
+            send_metric_to_dynamo "FAIL" "DockerBuild"
+            exit 1
         fi

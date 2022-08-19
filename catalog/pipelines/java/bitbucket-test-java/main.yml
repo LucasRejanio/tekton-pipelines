@@ -37,10 +37,13 @@ spec:
           workspace: repository
 
     - name: build
+      params:
+        - name: revision
+          value: $(params.git-revision)
       runAfter:
         - setup
       taskRef:
-        name: build-and-push-ecr
+        name: docker-build
       workspaces:
         - name: repository
           workspace: repository
