@@ -14,7 +14,7 @@ spec:
         cd /workspace/repository && ls -la
 
         #!/bin/bash
-        env
+        source .env
 
         echo "----------- Validando dados do metadata -----------"
         #Replace APPLICATION_NAME
