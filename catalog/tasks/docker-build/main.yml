@@ -45,11 +45,3 @@ spec:
             aws ecr create-repository --region $AWS_REGION --repository-name ${ECR_REPO_NAME} --no-cli-pager && exit 0
             [ $? -ne 0 ] && echo "Erro ao criar o repositório $ECR_REPO_NAME" && exit
         fi
-
-    - image: docker
-      name: build-and-push-ecr
-      script: |
-        #!/bin/bash
-        cd /workspace/repository && source .env
-
-        BITBUCKET_BRANCH="$(params.branch)"
