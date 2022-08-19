@@ -37,7 +37,6 @@ spec:
         else
             echo "Repositório ECR não encontrado.."
             echo "Criando repositório $ECR_REPO_NAME"
-            aws ecr create-repository --region $AWS_REGION --repository-name ${ECR_REPO_NAME} --no-cli-pager
-            exit 0
+            aws ecr create-repository --region $AWS_REGION --repository-name ${ECR_REPO_NAME} --no-cli-pager && exit 0
             [ $? -ne 0 ] && echo "Erro ao criar o repositório $ECR_REPO_NAME" && exit
         fi
