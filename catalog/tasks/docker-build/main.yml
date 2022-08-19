@@ -45,3 +45,62 @@ spec:
             aws ecr create-repository --region $AWS_REGION --repository-name ${ECR_REPO_NAME} --no-cli-pager && exit 0
             [ $? -ne 0 ] && echo "Erro ao criar o repositório $ECR_REPO_NAME" && exit
         fi
+
+    - image: docker
+      name: build-and-push-ecr
+      script: |
+        #!/bin/bash
+        cd /workspace/repository && source .env
+
+        BITBUCKET_BRANCH="$(params.revision)"
+        
+        case ${BITBUCKET_BRANCH} in
+          develop)
+              export AMBIENTE=dev
+              export ENV=development
+              echo "Identificado ambiente de Desenvolvimento"
+          ;;
+          staging)
+              export AMBIENTE=stg
+              export ENV=staging
+              echo "Identificado ambiente de Staging"
+          ;;
+          master|main)
+              export AMBIENTE=prd
+              export ENV=production
+              echo "Identificado ambiente de Produção"
+          ;;
+          *)
+              echo "Ambiente não identificado"
+              exit 1
+          ;;
+        esac
+
+        echo "----------- Validando dados do metadata -----------"
+        #Replace APPLICATION_NAME
+        if [ -z "${APPLICATION_NAME}" ]; then
+            echo "Não encontrado a váriavel APPLICATION_NAME"
+            exit 1
+        else
+            echo "Metadata validado."
+            export APPLICATION_NAME=$(echo $APPLICATION_NAME | sed 's/_/-/g')
+        fi
+
+        echo "----------- Gerando imagem da aplicação -----------"
+        AWS_REGION=us-west-1
+        AWS_ACCOUNT=876897421480
+        ECR_REPO_NAME=ecr-$APPLICATION_NAME
+
+        APP_ECR_URI=$AWS_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO_NAME
+        docker build . --build-arg BUILD_NUMBER=$BITBUCKET_BUILD_NUMBER --build-arg ENV=$ENV \
+            -t $APP_ECR_URI:$AMBIENTE \
+            -t $APP_ECR_URI:$AMBIENTE-$BITBUCKET_COMMIT \
+            -t $APP_ECR_URI:$AMBIENTE-$BITBUCKET_BUILD_NUMBER
+        if [ $? -eq 0 ]
+        then
+            echo "Imagem da aplicacao gerada com sucesso"
+        else
+            echo "Falha ao gerar imagem da aplicação"
+            send_metric_to_dynamo "FAIL" "DockerBuild"
+            exit 1
+        fi
