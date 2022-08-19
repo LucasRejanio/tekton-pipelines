@@ -11,10 +11,8 @@ spec:
     - image: 142401413602.dkr.ecr.sa-east-1.amazonaws.com/ecr-image-default-aws-cli:build
       name: verify-repository
       script: |
-        cd /workspace/repository && ls -la
-
         #!/bin/bash
-        source .env
+        cd /workspace/repository && source .env
 
         echo "----------- Validando dados do metadata -----------"
         #Replace APPLICATION_NAME
