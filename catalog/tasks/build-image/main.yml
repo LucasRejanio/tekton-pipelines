@@ -52,7 +52,7 @@ spec:
       name: build-and-push-ecr
       script: |
         printf "Instalando dependencias..\n"
-        apk add bash buildah podman ca-certificates
+        apk add bash buildah podman ca-certificates aws-cli
 
         #!/bin/bash
         cd /workspace/repository && source .env
@@ -100,6 +100,7 @@ spec:
 
         APP_ECR_URI=$AWS_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO_NAME
         buildah bud --format=docker -f Dockerfile -t $APP_ECR_URI:$AMBIENTE .
+        buildah commit 
 
         if [ $? -eq 0 ]
         then
@@ -111,8 +112,14 @@ spec:
         fi
 
         echo "----------- Realizando upload da imagem para o ECR -----------"
+        aws ecr get-login-password \
+            --region $AWS_REGION \
+        | docker login \
+            --username AWS \
+            --password-stdin $AWS_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com
+    
         buildah images
-        buildah push --format=docker $APP_ECR_URI
+        buildah push $APP_ECR_URI
         if [ $? -eq 0 ]
         then
             echo "Upload da Imagem finalizada com sucesso"
