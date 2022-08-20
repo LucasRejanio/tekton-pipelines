@@ -100,7 +100,6 @@ spec:
 
         APP_ECR_URI=$AWS_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO_NAME
         buildah bud --format=docker -f Dockerfile -t $APP_ECR_URI:$AMBIENTE .
-        buildah commit 
 
         if [ $? -eq 0 ]
         then
@@ -112,9 +111,14 @@ spec:
         fi
 
         echo "----------- Realizando upload da imagem para o ECR -----------"
+        aws ecr get-login-password \
+            --region $AWS_REGION \
+        | docker login \
+            --username AWS \
+            --password-stdin $AWS_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com
     
         buildah images
-        buildah push $APP_ECR_URI:$AMBIENTE
+        buildah push $APP_ECR_URI
         if [ $? -eq 0 ]
         then
             echo "Upload da Imagem finalizada com sucesso"
