@@ -5,8 +5,8 @@ metadata:
   namespace: tekton-pipelines
 spec:
   params:
-    - name: current-branch
-      description: Repository current branch.
+    - name: destination-branch
+      description: Repository destination branch.
       type: string
 
   workspaces:
@@ -59,7 +59,7 @@ spec:
 
 
         echo "----------- Validando ambiente -----------"
-        BITBUCKET_BRANCH="$(params.current-branch)"
+        BITBUCKET_BRANCH="$(params.destination-branch)"
         
         case ${BITBUCKET_BRANCH} in
           develop)
@@ -99,7 +99,7 @@ spec:
         ECR_REPO_NAME=ecr-$APPLICATION_NAME
 
         APP_ECR_URI=$AWS_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO_NAME
-        buildah bud --format=docker -f Dockerfile -t $APPLICATION_NAME .
+        buildah bud --format=docker -f Dockerfile -t $APP_ECR_URI:$AMBIENTE .
 
         if [ $? -eq 0 ]
         then
@@ -109,3 +109,15 @@ spec:
             send_metric_to_dynamo "FAIL" "DockerBuild"
             exit 1
         fi
+
+        echo "----------- Realizando upload da imagem para o ECR -----------"
+        buildah push $APP_ECR_URI:$AMBIENTE
+        if [ $? -eq 0 ]
+        then
+            echo "Upload da Imagem finalizada com sucesso"
+            exit 0
+        else
+            echo "Falha ao realizar o upload da imagem"
+            exit 1
+        fi
+

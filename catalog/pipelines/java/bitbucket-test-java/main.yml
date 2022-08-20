@@ -6,7 +6,7 @@ metadata:
 spec:
   params:
     - name: git-url
-    - name: current-branch
+    - name: destination-branch
   workspaces:
     - name: repository
     - name: artifacts
@@ -18,7 +18,7 @@ spec:
         - name: url
           value: $(params.git-url)
         - name: revision
-          value: $(params.current-branch)
+          value: $(params.destination-branch)
       taskRef:
         name: setup
       workspaces:
@@ -36,10 +36,10 @@ spec:
         - name: repository
           workspace: repository
 
-    - name: build
+    - name: build-image
       params:
-        - name: current-branch
-          value: $(params.current-branch)
+        - name: destination-branch
+          value: $(params.destination-branch)
       runAfter:
         - setup
       taskRef:
