@@ -111,6 +111,7 @@ spec:
         fi
 
         echo "----------- Realizando upload da imagem para o ECR -----------"
+        buildah images
         buildah push $APP_ECR_URI:$AMBIENTE
         if [ $? -eq 0 ]
         then
