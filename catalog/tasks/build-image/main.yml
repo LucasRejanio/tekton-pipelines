@@ -112,7 +112,7 @@ spec:
 
         echo "----------- Realizando upload da imagem para o ECR -----------"
         buildah images
-        buildah push $APP_ECR_URI:$AMBIENTE
+        buildah push --format=docker $APP_ECR_URI
         if [ $? -eq 0 ]
         then
             echo "Upload da Imagem finalizada com sucesso"
