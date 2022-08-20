@@ -51,7 +51,7 @@ spec:
         privileged: true
       name: build-and-push-ecr
       script: |
-        printf "Instalando dependencias..\n"
+        echo "----------- Instalando dependencias -----------"
         apk add bash buildah podman ca-certificates aws-cli
 
         #!/bin/bash
