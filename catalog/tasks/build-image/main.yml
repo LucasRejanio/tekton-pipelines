@@ -118,7 +118,7 @@ spec:
             --password-stdin $AWS_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com
     
         buildah images
-        buildah push $APP_ECR_URI:ENV
+        buildah push $APP_ECR_URI:$AMBIENTE
         if [ $? -eq 0 ]
         then
             echo "Upload da Imagem finalizada com sucesso"
