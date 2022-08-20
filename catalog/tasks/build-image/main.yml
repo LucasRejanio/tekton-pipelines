@@ -112,14 +112,9 @@ spec:
         fi
 
         echo "----------- Realizando upload da imagem para o ECR -----------"
-        aws ecr get-login-password \
-            --region $AWS_REGION \
-        | docker login \
-            --username AWS \
-            --password-stdin $AWS_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com
     
         buildah images
-        buildah push $APP_ECR_URI
+        buildah push $APP_ECR_URI:$AMBIENTE
         if [ $? -eq 0 ]
         then
             echo "Upload da Imagem finalizada com sucesso"
