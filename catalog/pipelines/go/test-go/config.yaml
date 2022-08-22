@@ -6,7 +6,7 @@ metadata:
 spec:
   params:
     - name: current-branch
-      description: The destination branch
+      description: The current branch
     - name: gitrepositoryurl
       description: The git repository url
   resourcetemplates:
