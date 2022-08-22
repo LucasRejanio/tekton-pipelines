@@ -13,7 +13,7 @@ spec:
     - apiVersion: tekton.dev/v1beta1
       kind: PipelineRun
       metadata:
-        generateName: build-java-pipeline-run-
+        generateName: build-java-
         namespace: tekton-pipelines
       spec:
         params:
