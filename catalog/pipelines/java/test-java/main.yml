@@ -1,12 +1,12 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: bitbucket-build-java
+  name: test-java
   namespace: tekton-pipelines
 spec:
   params:
     - name: git-url
-    - name: git-revision
+    - name: destination-branch
   workspaces:
     - name: repository
     - name: artifacts
@@ -18,7 +18,7 @@ spec:
         - name: url
           value: $(params.git-url)
         - name: revision
-          value: $(params.git-revision)
+          value: $(params.destination-branch)
       taskRef:
         name: setup
       workspaces:
@@ -26,3 +26,12 @@ spec:
           workspace: repository
         - name: ssh-directory
           workspace: ssh-directory
+
+    - name: tests
+      runAfter:
+        - setup
+      taskRef:
+        name: mvn-verify
+      workspaces:
+        - name: repository
+          workspace: repository
