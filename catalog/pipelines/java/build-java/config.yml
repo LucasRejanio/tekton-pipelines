@@ -53,7 +53,7 @@ metadata:
 spec:
   params:
     - name: destination-branch
-      value: $(body.pullrequest.source.branch.name)
+      value: $(body.pullrequest.destination.branch.name)
     - name: namespace
       value: tekton-pipelines
     - name: gitrepositoryurl
