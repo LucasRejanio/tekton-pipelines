@@ -1,25 +1,25 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: tekton-dashboard-server
-  namespace: tekton-pipelines
-  # annotations:
-  #   nginx.org/basic-auth-secret: "basic-auth"
-  #   nginx.org/basic-auth-realm: "Authentication Required"
-spec:
-  ingressClassName: nginx
-  tls:
-    - hosts:
-      - tekton-dashboard-dev.owill.com.br
-      secretName: nginx-tls-secret 
-  rules:
-    - host: tekton-dashboard-dev.owill.com.br
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: tekton-dashboard
-                port:
-                  number: 9097
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: tekton-dashboard-server
+#   namespace: tekton-pipelines
+#   # annotations:
+#   #   nginx.org/basic-auth-secret: "basic-auth"
+#   #   nginx.org/basic-auth-realm: "Authentication Required"
+# spec:
+#   ingressClassName: nginx
+#   tls:
+#     - hosts:
+#       - tekton-dashboard-dev.owill.com.br
+#       secretName: nginx-tls-secret 
+#   rules:
+#     - host: tekton-dashboard-dev.owill.com.br
+#       http:
+#         paths:
+#           - path: /
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: tekton-dashboard
+#                 port:
+#                   number: 9097

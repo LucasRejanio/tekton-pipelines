@@ -40,7 +40,7 @@ spec:
                     storage: 1Gi
           - name: ssh-directory
             secret:
-              secretName: my-ssh-credentials
+              secretName: bitbucket-ssh-credentials
         serviceAccountName: tekton-triggers-webhook
         pipelineRef:
           name: java-test
