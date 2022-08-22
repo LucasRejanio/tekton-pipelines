@@ -1,0 +1,17 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: golang-security-checker
+  namespace: tekton-pipelines
+spec:
+  workspaces:
+    - name: repository
+
+  steps:
+    - image: 142401413602.dkr.ecr.sa-east-1.amazonaws.com/ecr-image-default-golang:1.18.0-stretch
+      name: golang-security-checker
+      script: |
+        - wget -O - -q https://raw.githubusercontent.com/securego/gosec/master/install.sh | sh -s latest
+        - ./bin/gosec ./...
+
+      workingDir: "$(workspaces.repository.path)"
