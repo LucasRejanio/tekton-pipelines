@@ -1,0 +1,73 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: test-go
+  namespace: tekton-pipelines
+spec:
+  params:
+    - name: current-branch
+      description: The destination branch
+    - name: gitrepositoryurl
+      description: The git repository url
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: test-go-
+        namespace: tekton-pipelines
+      spec:
+        params:
+          - name: git-url
+            value: $(tt.params.gitrepositoryurl)
+          - name: current-branch
+            value: $(tt.params.current-branch)
+        workspaces:
+          - name: repository
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 1Gi
+          - name: artifacts
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 1Gi
+          - name: ssh-directory
+            secret:
+              secretName: my-ssh-credentials
+        serviceAccountName: tekton-triggers-webhook
+        pipelineRef:
+          name: test-go
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: test-go
+  namespace: tekton-pipelines
+spec:
+  params:
+    - name: current-branch
+      value: $(body.pullrequest.source.branch.name)
+    - name: namespace
+      value: tekton-pipelines
+    - name: gitrepositoryurl
+      value: git@bitbucket.org:$(body.repository.full_name)
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: test-go
+  namespace: tekton-pipelines
+spec:
+  serviceAccountName: tekton-triggers
+  triggers:
+    - bindings:
+      - ref: test-go
+      template:
+        ref: test-go

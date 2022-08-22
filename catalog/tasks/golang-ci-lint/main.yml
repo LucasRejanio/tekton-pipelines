@@ -1,0 +1,14 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: golangci-lint
+  namespace: tekton-pipelines
+spec:
+  workspaces:
+    - name: repository
+
+  steps:
+    - image: golangci/golangci-lint:latest-alpine
+      name: golangci-lint
+      script: golangci-lint run -v
+      workingDir: "$(workspaces.repository.path)"
