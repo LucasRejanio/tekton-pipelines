@@ -18,19 +18,19 @@ spec:
                 port:
                   number: 8080
 
-          - path: /test-java
+          - path: /java-test
             pathType: Prefix
             backend:
               service:
-                name: el-test-java
+                name: el-java-test
                 port:
                   number: 8080
 
-          - path: /build-java
+          - path: /java-build
             pathType: Prefix
             backend:
               service:
-                name: el-build-java
+                name: el-java-build
                 port:
                   number: 8080
 

@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: build-java
+  name: java-build
   namespace: tekton-pipelines
 spec:
   params:

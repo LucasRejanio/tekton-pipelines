@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: test-java
+  name: java-test
   namespace: tekton-pipelines
 spec:
   params:
@@ -27,7 +27,7 @@ spec:
         - name: ssh-directory
           workspace: ssh-directory
 
-    - name: tests
+    - name: mvn-verify
       runAfter:
         - setup
       taskRef:
