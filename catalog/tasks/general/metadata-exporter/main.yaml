@@ -4,12 +4,13 @@ metadata:
   name: metadata-exporter
   namespace: tekton-pipelines
 spec:
+  workspaces:
+    - name: repository
+
   steps:
     - name: metadata-exporter
       image: alpine
       script: |
-        cd /workspace/repository && ls -la
-        
         printf "Instalando dependencias..\n"
         apk add bash wget gettext yq
 
@@ -71,5 +72,4 @@ spec:
         # Parse the yaml file into shell like environment variable definition
         yq eval '.. | select((tag == "!!map" or tag == "!!seq") | not) | "'"${prefix}"'" + (path | join("_") | upcase) + "'"${suffix}"'" + "=" + ("'\''" + . + "'\''")'"${envrpl}"'' ${metadata} > .env
 
-  workspaces:
-    - name: repository
+      workingDir: "$(workspaces.repository.path)"
