@@ -49,7 +49,7 @@ spec:
     - name: url
       description: Repository URL to clone from.
       type: string
-    - name: branch
+    - name: revision
       description: Revision to checkout. (branch, tag, sha, ref, etc...)
       type: string
       default: ""
