@@ -17,7 +17,7 @@ spec:
       params:
         - name: url
           value: $(params.git-url)
-        - name: destination-branch
+        - name: revision
           value: $(params.destination-branch)
       taskRef:
         name: setup
