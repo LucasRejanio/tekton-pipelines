@@ -34,3 +34,11 @@ spec:
                 port:
                   number: 8080
 
+          - path: /go-test
+            pathType: Prefix
+            backend:
+              service:
+                name: el-go-test
+                port:
+                  number: 8080
+
