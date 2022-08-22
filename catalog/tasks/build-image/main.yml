@@ -49,7 +49,7 @@ spec:
     - image: alpine
       securityContext:
         privileged: true
-      name: build-and-push-ecr
+      name: build-and-push
       script: |
         echo "----------- Instalando dependencias -----------"
         apk add bash buildah podman ca-certificates aws-cli
