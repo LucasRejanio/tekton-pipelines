@@ -27,11 +27,29 @@ spec:
         - name: ssh-directory
           workspace: ssh-directory
 
-    - name: lint
+    - name: golangci-lint
       runAfter:
         - setup
       taskRef:
         name: golangci-lint
+      workspaces:
+        - name: repository
+          workspace: repository
+    
+    - name: golang-security-checker
+      runAfter:
+        - setup
+      taskRef:
+        name: golang-security-checker
+      workspaces:
+        - name: repository
+          workspace: repository
+    
+    - name: golang-test
+      runAfter:
+        - setup
+      taskRef:
+        name: golang-test
       workspaces:
         - name: repository
           workspace: repository

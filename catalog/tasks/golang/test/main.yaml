@@ -1,0 +1,15 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: golang-test
+  namespace: tekton-pipelines
+spec:
+  workspaces:
+    - name: repository
+
+  steps:
+    - image: 142401413602.dkr.ecr.sa-east-1.amazonaws.com/ecr-image-default-golang:1.18.0-stretch
+      name: golang-test
+      script: make test
+
+      workingDir: "$(workspaces.repository.path)"
