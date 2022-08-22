@@ -26,11 +26,11 @@ spec:
                 port:
                   number: 8080
 
-          - path: /bitbucket-build-java
+          - path: /build-java
             pathType: Prefix
             backend:
               service:
-                name: el-bitbucket-build-java
+                name: el-build-java
                 port:
                   number: 8080
 
