@@ -1,7 +1,7 @@
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerTemplate
 metadata:
-  name: bitbucket-test-java
+  name: test-java
   namespace: tekton-pipelines
 spec:
   params:
@@ -43,12 +43,12 @@ spec:
               secretName: my-ssh-credentials
         serviceAccountName: tekton-triggers-webhook
         pipelineRef:
-          name: bitbucket-test-java
+          name: test-java
 ---
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerBinding
 metadata:
-  name: bitbucket-test-java
+  name: test-java
   namespace: tekton-pipelines
 spec:
   params:
@@ -62,12 +62,12 @@ spec:
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: EventListener
 metadata:
-  name: bitbucket-test-java
+  name: test-java
   namespace: tekton-pipelines
 spec:
   serviceAccountName: tekton-triggers
   triggers:
     - bindings:
-      - ref: bitbucket-test-java
+      - ref: test-java
       template:
-        ref: bitbucket-test-java
+        ref: test-java
