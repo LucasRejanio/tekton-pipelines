@@ -13,6 +13,14 @@ spec:
   workspaces:
     - name: repository
     - name : ssh-directory
+    - name: basic-auth
+      optional: true
+      description: |
+        A Workspace containing a .gitconfig and .git-credentials file. These
+        will be copied to the user's home before any git commands are run. Any
+        other files in this Workspace are ignored. It is strongly recommended
+        to use ssh-directory over basic-auth whenever possible and to bind a
+        Secret to this Workspace over other volume types.
 
   steps:
     - image: alpine
@@ -49,6 +57,8 @@ spec:
         value: $(workspaces.ssh-directory.path)
       - name: MERGE_COMMIT_HASH
         value: $(params.merge-commit-hash)
+      - name: WORKSPACE_BASIC_AUTH_DIRECTORY_PATH
+        value: $(workspaces.basic-auth.path)
       script: |
         echo "----------- Instalando dependencias -----------"
         apk add bash sed git
@@ -57,9 +67,13 @@ spec:
         
         echo "----------- Configurando chave ssh -----------"
         cd /workspace/ssh-directory
-        cp -R "${WORKSPACE_SSH_DIRECTORY_PATH}" /tekton/home/.ssh
-        chmod 700 /tekton/home/.ssh
-        chmod -R 400 /tekton/home/.ssh/*
+
+        cp "${WORKSPACE_BASIC_AUTH_DIRECTORY_PATH}/.git-credentials" "/tekton/home/.git-credentials"
+        cp "${WORKSPACE_BASIC_AUTH_DIRECTORY_PATH}/.gitconfig" "/tekton/home/.gitconfig"
+        chmod 400 "/tekton/home/.git-credentials"
+        chmod 400 "/tekton/home/.gitconfig"
+
+        echo "Chave ssh configurada com sucesso!"
 
         echo "----------- Subindo modificação para o repositório git -----------"
         cd ../repository
