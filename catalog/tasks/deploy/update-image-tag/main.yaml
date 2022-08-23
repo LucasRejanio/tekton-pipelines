@@ -26,8 +26,10 @@ spec:
         #!/bin/bash
         source .env
 
+        echo $APPLICATION_NAME
+
         echo "----------- Atualizando tag da imagem -----------"
-        sed -i 's|142401413602.dkr.ecr.sa-east-1.amazonaws.com/ecr-$APPLICATION_NAME:.*|142401413602.dkr.ecr.sa-east-1.amazonaws.com/ecr-$APPLICATION_NAME:$(params.destination-branch)|' k8s/deployment.yaml
+        sed -i 's|142401413602.dkr.ecr.sa-east-1.amazonaws.com/ecr-$APPLICATION_NAME:.*|142401413602.dkr.ecr.sa-east-1.amazonaws.com/ecr-$APPLICATION_NAME:$(params.merge-commit-hash)|' k8s/deployment.yaml
 
         cat k8s/deployment.yaml
 
