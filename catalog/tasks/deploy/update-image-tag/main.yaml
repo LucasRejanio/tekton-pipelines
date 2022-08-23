@@ -50,7 +50,7 @@ spec:
         privileged: true
       workingDir: "$(workspaces.repository.path)"
 
-    - image: alpine
+    - image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.29.0
       name: push-modification-to-git
       env:
       - name: WORKSPACE_SSH_DIRECTORY_PATH
