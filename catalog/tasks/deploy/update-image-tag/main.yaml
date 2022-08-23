@@ -18,10 +18,10 @@ spec:
     - image: alpine
       securityContext:
         privileged: true
-      name: update-image-tag
+      name: replace-tag-on-deployment
       script: |
         echo "----------- Instalando dependencias -----------"
-        apk add bash sed git
+        apk add bash sed
 
         #!/bin/bash
         source .env
@@ -33,12 +33,27 @@ spec:
         if [ $? -eq 0 ]
         then
             echo "A tag imagem da aplicacao usada no deployment foi atualizada com sucesso"
-            cat k8s/deployment.yaml
-            git status
             exit 0
         else
             echo "Falha ao atualizar tag da imagem da aplicação"
             exit 1
         fi
 
-      workingDir: "$(workspaces.repository.path)" 
+      workingDir: "$(workspaces.repository.path)"
+
+    - image: alpine
+      securityContext:
+        privileged: true
+      name: push-modification-to-git
+      script: |
+        echo "----------- Instalando dependencias -----------"
+        apk add bash sed git
+
+        #!/bin/bash
+        source .env
+
+        echo "----------- Subindo modificação para o repositório git -----------"
+        cat k8s/deployment.yaml
+        git status
+
+      workingDir: "$(workspaces.repository.path)"
