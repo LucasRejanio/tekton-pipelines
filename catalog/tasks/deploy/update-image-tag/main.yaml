@@ -54,7 +54,6 @@ spec:
         apk add bash sed git
 
         #!/bin/bash
-        source .env
 
         cp -R "${WORKSPACE_SSH_DIRECTORY_PATH}" /tekton/home/.ssh
         chmod 700 /tekton/home/.ssh
@@ -63,7 +62,7 @@ spec:
         echo "----------- Subindo modificação para o repositório git -----------"
         cat k8s/deployment.yaml
         ls -la
-        # git add . && git commit -m "chore(deploy): updating image tag to '$MERGE_COMMIT_HASH'"
+        git add . && git commit -m "chore(deploy): updating image tag to '$MERGE_COMMIT_HASH'"
       securityContext:
         privileged: true
       workingDir: "$(workspaces.ssh-directory.path)"
