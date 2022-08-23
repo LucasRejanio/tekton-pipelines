@@ -65,3 +65,5 @@ spec:
       workspaces:
         - name: repository
           workspace: repository
+        - name: ssh-directory
+          workspace: ssh-directory

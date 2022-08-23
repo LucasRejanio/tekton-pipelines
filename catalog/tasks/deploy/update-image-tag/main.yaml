@@ -13,19 +13,23 @@ spec:
 
   workspaces:
     - name: repository
+    - name : ssh-directory
 
   steps:
     - image: alpine
       securityContext:
         privileged: true
       name: replace-tag-on-deployment
+      env:
+      - name: MERGE_COMMIT_HASH
+        value: $(params.merge-commit-hash)
+      workingDir: "$(workspaces.repository.path)"
       script: |
         echo "----------- Instalando dependencias -----------"
         apk add bash sed
 
         #!/bin/bash
         source .env
-        MERGE_COMMIT_HASH="$(params.merge-commit-hash)"
 
         echo "----------- Atualizando tag da imagem -----------"
         sed -i "s|142401413602.dkr.ecr.sa-east-1.amazonaws.com/ecr-.*|142401413602.dkr.ecr.sa-east-1.amazonaws.com/ecr-$APPLICATION_NAME:$MERGE_COMMIT_HASH|" k8s/deployment.yaml
@@ -39,12 +43,16 @@ spec:
             exit 1
         fi
 
-      workingDir: "$(workspaces.repository.path)"
-
     - image: alpine
       securityContext:
         privileged: true
       name: push-modification-to-git
+      env:
+      - name: WORKSPACE_SSH_DIRECTORY_PATH
+        value: $(workspaces.ssh-directory.path)
+      - name: MERGE_COMMIT_HASH
+        value: $(params.merge-commit-hash)
+      workingDir: "$(workspaces.repository.path)"
       script: |
         echo "----------- Instalando dependencias -----------"
         apk add bash sed git
@@ -52,8 +60,10 @@ spec:
         #!/bin/bash
         source .env
 
+        cp -R "${WORKSPACE_SSH_DIRECTORY_PATH}" /tekton/home/.ssh
+        chmod 700 /tekton/home/.ssh
+        chmod -R 400 /tekton/home/.ssh/*
+
         echo "----------- Subindo modificação para o repositório git -----------"
         cat k8s/deployment.yaml
-        git status
-
-      workingDir: "$(workspaces.repository.path)"
+        git add . && git commit -m "chore(deploy): updating image tag to '$MERGE_COMMIT_HASH'"

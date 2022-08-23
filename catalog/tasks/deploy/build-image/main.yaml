@@ -15,6 +15,7 @@ spec:
   steps:
     - image: 142401413602.dkr.ecr.sa-east-1.amazonaws.com/ecr-image-default-aws-cli:build
       name: verify-repository
+      workingDir: "$(workspaces.repository.path)"
       script: |
         #!/bin/bash
         source .env
@@ -46,12 +47,14 @@ spec:
             [ $? -ne 0 ] && echo "Erro ao criar o repositório $ECR_REPO_NAME" && exit
         fi
 
-      workingDir: "$(workspaces.repository.path)"
-
     - image: alpine
       securityContext:
         privileged: true
       name: build-and-push
+      env:
+      - name: DESTINATION-BRANCH
+        value: $(params.destination-branch)
+      workingDir: "$(workspaces.repository.path)"
       script: |
         echo "----------- Instalando dependencias -----------"
         apk add bash buildah podman ca-certificates aws-cli
@@ -59,11 +62,9 @@ spec:
         #!/bin/bash
         source .env
 
-
         echo "----------- Validando ambiente -----------"
-        BITBUCKET_BRANCH="$(params.destination-branch)"
         
-        case ${BITBUCKET_BRANCH} in
+        case ${DESTINATION-BRANCH} in
           develop)
               export AMBIENTE=dev
               export ENV=development
@@ -130,6 +131,3 @@ spec:
             echo "Falha ao realizar o upload da imagem"
             exit 1
         fi
-
-      workingDir: "$(workspaces.repository.path)"
-
