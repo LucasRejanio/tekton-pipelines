@@ -47,3 +47,21 @@ spec:
       workspaces:
         - name: repository
           workspace: repository
+
+    - name: update-image-tag
+      when:
+      - input: "$(params.destination-branch)"
+        operator: in
+        values: ["develop", "staging", "master", "main"]
+      params:
+        - name: destination-branch
+          value: $(params.destination-branch)
+        - name: merge-commit-hash
+          value: $(params.merge-commit-hash)
+      runAfter:
+        - setup
+      taskRef:
+        name: update-image-tag
+      workspaces:
+        - name: repository
+          workspace: repository
