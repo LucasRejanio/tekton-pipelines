@@ -17,20 +17,20 @@ spec:
                 name: el-github-pull-request
                 port:
                   number: 8080
+          
+          - path: /deploy-k8s
+            pathType: Prefix
+            backend:
+              service:
+                name: el-deploy-k8s
+                port:
+                  number: 8080
 
           - path: /java-test
             pathType: Prefix
             backend:
               service:
                 name: el-java-test
-                port:
-                  number: 8080
-
-          - path: /java-build
-            pathType: Prefix
-            backend:
-              service:
-                name: el-java-build
                 port:
                   number: 8080
 
