@@ -25,12 +25,20 @@ spec:
 
         #!/bin/bash
         source .env
-
-        echo $APPLICATION_NAME
+        MERGE_COMMIT_HASH="$(params.merge-commit-hash)"
 
         echo "----------- Atualizando tag da imagem -----------"
-        sed -i 's|142401413602.dkr.ecr.sa-east-1.amazonaws.com/ecr-$APPLICATION_NAME:.*|142401413602.dkr.ecr.sa-east-1.amazonaws.com/ecr-$APPLICATION_NAME:$(params.merge-commit-hash)|' k8s/deployment.yaml
+        sed -i "s|142401413602.dkr.ecr.sa-east-1.amazonaws.com/ecr-.*|142401413602.dkr.ecr.sa-east-1.amazonaws.com/ecr-$APPLICATION_NAME:$MERGE_COMMIT_HASH|" k8s/deployment.yaml
 
         cat k8s/deployment.yaml
+
+        if [ $? -eq 0 ]
+        then
+            echo "A tag imagem da aplicacao usada no deployment foi atualizada com sucesso"
+            exit 0
+        else
+            echo "Falha ao atualizar tag da imagem da aplicação"
+            exit 1
+        fi
 
       workingDir: "$(workspaces.repository.path)" 
