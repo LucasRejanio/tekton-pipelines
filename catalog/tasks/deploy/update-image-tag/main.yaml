@@ -10,20 +10,16 @@ spec:
       type: string
     - name: merge-commit-hash
       type: string
-
   workspaces:
     - name: repository
     - name : ssh-directory
 
   steps:
     - image: alpine
-      securityContext:
-        privileged: true
       name: replace-tag-on-deployment
       env:
       - name: MERGE_COMMIT_HASH
         value: $(params.merge-commit-hash)
-      workingDir: "$(workspaces.repository.path)"
       script: |
         echo "----------- Instalando dependencias -----------"
         apk add bash sed
@@ -42,17 +38,17 @@ spec:
             echo "Falha ao atualizar tag da imagem da aplicação"
             exit 1
         fi
-
-    - image: alpine
       securityContext:
         privileged: true
+      workingDir: "$(workspaces.repository.path)"
+
+    - image: alpine
       name: push-modification-to-git
       env:
       - name: WORKSPACE_SSH_DIRECTORY_PATH
         value: $(workspaces.ssh-directory.path)
       - name: MERGE_COMMIT_HASH
         value: $(params.merge-commit-hash)
-      workingDir: "$(workspaces.repository.path)"
       script: |
         echo "----------- Instalando dependencias -----------"
         apk add bash sed git
@@ -68,3 +64,6 @@ spec:
         cat k8s/deployment.yaml
         ls -la
         # git add . && git commit -m "chore(deploy): updating image tag to '$MERGE_COMMIT_HASH'"
+      securityContext:
+        privileged: true
+      workingDir: "$(workspaces.ssh-directory.path)"
