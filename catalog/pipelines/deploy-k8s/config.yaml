@@ -21,6 +21,8 @@ spec:
             value: $(tt.params.gitrepositoryurl)
           - name: destination-branch
             value: $(tt.params.destination-branch)
+          - name: merge-commit-hash
+            value: $(tt.params.merge-commit-hash)
         workspaces:
           - name: repository
             volumeClaimTemplate:
@@ -54,6 +56,8 @@ spec:
   params:
     - name: destination-branch
       value: $(body.pullrequest.destination.branch.name)
+    - name: merge-commit-hash
+      value: $(body.pullrequest.merge_commit.hash)
     - name: namespace
       value: tekton-pipelines
     - name: gitrepositoryurl

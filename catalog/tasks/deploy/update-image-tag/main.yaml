@@ -1,0 +1,33 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: update-image-tag
+  namespace: tekton-pipelines
+spec:
+  params:
+    - name: destination-branch
+      description: Repository destination branch.
+      type: string
+    - name: merge-commit-hash
+      type: string
+
+  workspaces:
+    - name: repository
+
+    - image: alpine
+      securityContext:
+        privileged: true
+      name: update-image-tag
+      script: |
+        echo "----------- Instalando dependencias -----------"
+        apk add bash sed git
+
+        #!/bin/bash
+        source .env
+
+        echo "----------- Atualizando tag da imagem -----------"
+        sed 's|142401413602.dkr.ecr.sa-east-1.amazonaws.com/ecr-$APPLICATION_NAME:.*|142401413602.dkr.ecr.sa-east-1.amazonaws.com/ecr-$APPLICATION_NAME:$(params.destination-branch)|' k8s/deployment.yaml
+
+        cat k8s/deployment.yaml
+
+      workingDir: "$(workspaces.repository.path)" 
