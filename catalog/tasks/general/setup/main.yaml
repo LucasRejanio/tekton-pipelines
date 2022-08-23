@@ -238,6 +238,7 @@ spec:
 
     - name: metadata-exporter
       image: alpine
+      workingDir: "$(workspaces.repository.path)"
       script: |
         echo "----------- Instalando dependencias -----------"
         apk add bash wget gettext yq
@@ -299,5 +300,3 @@ spec:
 
         # Parse the yaml file into shell like environment variable definition
         yq eval '.. | select((tag == "!!map" or tag == "!!seq") | not) | "'"${prefix}"'" + (path | join("_") | upcase) + "'"${suffix}"'" + "=" + ("'\''" + . + "'\''")'"${envrpl}"'' ${metadata} > .env
-
-      workingDir: "$(workspaces.repository.path)"

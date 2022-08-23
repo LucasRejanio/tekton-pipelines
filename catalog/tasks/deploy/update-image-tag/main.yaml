@@ -66,4 +66,5 @@ spec:
 
         echo "----------- Subindo modificação para o repositório git -----------"
         cat k8s/deployment.yaml
-        git add . && git commit -m "chore(deploy): updating image tag to '$MERGE_COMMIT_HASH'"
+        ls -la
+        # git add . && git commit -m "chore(deploy): updating image tag to '$MERGE_COMMIT_HASH'"
