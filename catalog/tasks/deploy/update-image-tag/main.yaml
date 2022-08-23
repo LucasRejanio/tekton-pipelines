@@ -55,13 +55,14 @@ spec:
 
         #!/bin/bash
         
-        ls -la
+        echo "----------- Configurando chave ssh -----------"
+        cd /workspace/ssh-directory
         cp -R "${WORKSPACE_SSH_DIRECTORY_PATH}" /tekton/home/.ssh
         chmod 700 /tekton/home/.ssh
         chmod -R 400 /tekton/home/.ssh/*
 
         echo "----------- Subindo modificação para o repositório git -----------"
-        ls -la
-        # git add . && git commit -m "chore(deploy): updating image tag to '$MERGE_COMMIT_HASH'"
+        cd ../repository
+        git add . && git commit -m "chore(deploy): updating image tag to '$MERGE_COMMIT_HASH'"
       securityContext:
         privileged: true
