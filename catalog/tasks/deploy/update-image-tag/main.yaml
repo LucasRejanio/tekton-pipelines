@@ -68,10 +68,7 @@ spec:
         echo "----------- Configurando chave ssh -----------"
         cd /workspace/ssh-directory
 
-        cp "${WORKSPACE_BASIC_AUTH_DIRECTORY_PATH}/.git-credentials" "/tekton/home/.git-credentials"
-        cp "${WORKSPACE_BASIC_AUTH_DIRECTORY_PATH}/.gitconfig" "/tekton/home/.gitconfig"
-        chmod 400 "/tekton/home/.git-credentials"
-        chmod 400 "/tekton/home/.gitconfig"
+        ls -la
 
         echo "Chave ssh configurada com sucesso!"
 
