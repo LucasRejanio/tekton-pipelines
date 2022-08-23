@@ -14,6 +14,7 @@ spec:
   workspaces:
     - name: repository
 
+  steps:
     - image: alpine
       securityContext:
         privileged: true
