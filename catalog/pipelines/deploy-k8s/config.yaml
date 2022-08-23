@@ -5,6 +5,8 @@ metadata:
   namespace: tekton-pipelines
 spec:
   params:
+    - name: merge-commit-hash
+      description: Hash of commit to tag image
     - name: destination-branch
       description: The destination branch
     - name: gitrepositoryurl
