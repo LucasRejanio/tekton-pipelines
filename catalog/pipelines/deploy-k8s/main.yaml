@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: java-build
+  name: deploy-k8s
   namespace: tekton-pipelines
 spec:
   params:
@@ -14,6 +14,10 @@ spec:
 
   tasks:
     - name: setup
+      when:
+      - input: "$(params.destination-branch)"
+        operator: in
+        values: ["develop", "staging", "master", "main"]
       params:
         - name: url
           value: $(params.git-url)
@@ -28,6 +32,10 @@ spec:
           workspace: ssh-directory
 
     - name: build-image
+      when:
+      - input: "$(params.destination-branch)"
+        operator: in
+        values: ["develop", "staging", "master", "main"]
       params:
         - name: destination-branch
           value: $(params.destination-branch)

@@ -1,7 +1,7 @@
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerTemplate
 metadata:
-  name: java-build
+  name: deploy-k8s
   namespace: tekton-pipelines
 spec:
   params:
@@ -13,7 +13,7 @@ spec:
     - apiVersion: tekton.dev/v1beta1
       kind: PipelineRun
       metadata:
-        generateName: java-build-
+        generateName: deploy-k8s-
         namespace: tekton-pipelines
       spec:
         params:
@@ -43,12 +43,12 @@ spec:
               secretName: bitbucket-ssh-credentials
         serviceAccountName: tekton-triggers-webhook
         pipelineRef:
-          name: java-build
+          name: deploy-k8s
 ---
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerBinding
 metadata:
-  name: java-build
+  name: deploy-k8s
   namespace: tekton-pipelines
 spec:
   params:
@@ -62,12 +62,12 @@ spec:
 apiVersion: triggers.tekton.dev/v1alpha1
 kind: EventListener
 metadata:
-  name: java-build
+  name: deploy-k8s
   namespace: tekton-pipelines
 spec:
   serviceAccountName: tekton-triggers
   triggers:
     - bindings:
-      - ref: java-build
+      - ref: deploy-k8s
       template:
-        ref: java-build
+        ref: deploy-k8s
