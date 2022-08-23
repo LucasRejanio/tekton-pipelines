@@ -30,8 +30,6 @@ spec:
         echo "----------- Atualizando tag da imagem -----------"
         sed -i "s|142401413602.dkr.ecr.sa-east-1.amazonaws.com/ecr-.*|142401413602.dkr.ecr.sa-east-1.amazonaws.com/ecr-$APPLICATION_NAME:$MERGE_COMMIT_HASH|" k8s/deployment.yaml
 
-        cat k8s/deployment.yaml
-
         if [ $? -eq 0 ]
         then
             echo "A tag imagem da aplicacao usada no deployment foi atualizada com sucesso"
@@ -40,5 +38,9 @@ spec:
             echo "Falha ao atualizar tag da imagem da aplicação"
             exit 1
         fi
+
+        cat k8s/deployment.yaml
+
+        git status
 
       workingDir: "$(workspaces.repository.path)" 
