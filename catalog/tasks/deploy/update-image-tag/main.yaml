@@ -55,7 +55,7 @@ spec:
 
         #!/bin/bash
         
-        cd /workspaces/ssh-directory
+        ls -la
         cp -R "${WORKSPACE_SSH_DIRECTORY_PATH}" /tekton/home/.ssh
         chmod 700 /tekton/home/.ssh
         chmod -R 400 /tekton/home/.ssh/*
