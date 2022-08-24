@@ -66,10 +66,10 @@ spec:
         #!/bin/bash
         
         echo "----------- Configurando chave ssh -----------"
-        cd /workspace/ssh-directory/
-        chmod 400 id_rsa
+        cp /workspace/ssh-directory/id_rsa /tmp
+        chmod 400 /tmp/id_rsa
         eval $(ssh-agent)
-        ssh-add id_rsa
+        ssh-add /tmp/id_rsa
         
          if [ $? -eq 0 ]
         then
