@@ -70,6 +70,8 @@ spec:
         chmod 400 /tmp/id_rsa
         eval $(ssh-agent)
         ssh-add /tmp/id_rsa
+
+        ssh -i /tmp/id_rsa git@bitbucket.org
         
          if [ $? -eq 0 ]
         then
