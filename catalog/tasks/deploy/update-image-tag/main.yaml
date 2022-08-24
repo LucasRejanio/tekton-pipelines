@@ -86,6 +86,7 @@ spec:
         git remote update
         git fetch 
         git checkout --track origin/main
+        git checkout test/tekton-pipeline
         git status
         git add .
         git commit -a -m "chore(deploy): updating image tag to '$MERGE_COMMIT_HASH'"
