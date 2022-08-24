@@ -81,7 +81,7 @@ spec:
 
         echo "----------- Subindo modificação para o repositório git -----------"
         cd /workspace/repository
-        git status && git add -a
+        git status && git add .
         git commit -m "chore(deploy): updating image tag to '$MERGE_COMMIT_HASH'"
         git push origin main
       securityContext:
