@@ -81,10 +81,6 @@ spec:
 
         echo "----------- Subindo modificação para o repositório git -----------"
         cd /workspace/repository
-        git remote add core-pix-account-validate-api git@bitbucket.org:will-bank/core-pix-account-validate-api.git
-        git checkout main
-        git status && git add .
-        git commit -m "chore(deploy): updating image tag to '$MERGE_COMMIT_HASH'"
-        git push -u origin main
+        git commit -a -m "chore(deploy): updating image tag to '$MERGE_COMMIT_HASH'"
       securityContext:
         privileged: true
