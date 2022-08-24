@@ -71,7 +71,6 @@ spec:
         chmod 400 /tmp/id_rsa
         eval $(ssh-agent)
         ssh-add /tmp/id_rsa
-        ssh-add -L
         
         if [ $? -eq 0 ]
         then
@@ -84,10 +83,7 @@ spec:
         echo "----------- Subindo modificação para o repositório git -----------"
         cd /workspace/repository
         git config --global user.email "devops-will@willbank.com.br"
-        git clone git@bitbucket.org:will-bank/core-pix-account-validate-api.git
-        cd core-pix-account-validate-api
         git checkout test/tekton-pipeline
-        rm test
         git add .
         git commit -a -m "chore(deploy): updating image tag to '$MERGE_COMMIT_HASH'"
         git push 
