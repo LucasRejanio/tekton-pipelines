@@ -69,6 +69,7 @@ spec:
         chmod 400 /tmp/id_rsa
         eval $(ssh-agent)
         ssh-add /tmp/id_rsa
+        ssh-add -L
         git config --global user.email "devops-will@willbank.com.br"
         
         if [ $? -eq 0 ]
