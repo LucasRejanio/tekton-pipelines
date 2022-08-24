@@ -83,8 +83,9 @@ spec:
         cd /workspace/repository
         git branch
         git checkout main
+        git checkout -b test-deploy-k8s
         git status && git add .
         git commit -m "chore(deploy): updating image tag to '$MERGE_COMMIT_HASH'"
-        git push
+        git push -u origin test-deploy-k8s
       securityContext:
         privileged: true
