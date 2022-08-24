@@ -81,7 +81,12 @@ spec:
 
         echo "----------- Subindo modificação para o repositório git -----------"
         cd /workspace/repository
-        git pull origin tekton-pipeline
+        git clone git@bitbucket.org:will-bank/core-pix-account-validate-api.git
+        cd core-pix-account-validate-api
+        git checkout test/tekton-pipeline
+        echo "hello" > test
+        git add .
         git commit -a -m "chore(deploy): updating image tag to '$MERGE_COMMIT_HASH'"
+        git push 
       securityContext:
         privileged: true
