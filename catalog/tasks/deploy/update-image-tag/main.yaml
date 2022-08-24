@@ -72,7 +72,6 @@ spec:
         eval $(ssh-agent)
         ssh-add /tmp/id_rsa
         ssh-add -L
-        mkdir ~/.ssh
         
         if [ $? -eq 0 ]
         then
