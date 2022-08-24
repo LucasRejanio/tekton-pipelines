@@ -81,7 +81,7 @@ spec:
 
         echo "----------- Subindo modificação para o repositório git -----------"
         cd /workspace/repository
-        git pull origin main
+        git pull origin tekton-pipeline
         git commit -a -m "chore(deploy): updating image tag to '$MERGE_COMMIT_HASH'"
       securityContext:
         privileged: true
