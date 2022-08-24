@@ -70,8 +70,6 @@ spec:
         chmod 400 /tmp/id_rsa
         eval $(ssh-agent)
         ssh-add /tmp/id_rsa
-
-        ssh -i -t /tmp/id_rsa git@bitbucket.org
         
          if [ $? -eq 0 ]
         then
@@ -83,8 +81,9 @@ spec:
 
         echo "----------- Subindo modificação para o repositório git -----------"
         cd /workspace/repository
-        git add . \
-        && git commit -m "chore(deploy): updating image tag to '$MERGE_COMMIT_HASH'" \
-        && git push origin main
+        git status
+        git add .
+        git commit -m "chore(deploy): updating image tag to '$MERGE_COMMIT_HASH'"
+        git push origin main
       securityContext:
         privileged: true
