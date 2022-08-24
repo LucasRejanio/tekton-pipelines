@@ -81,11 +81,10 @@ spec:
 
         echo "----------- Subindo modificação para o repositório git -----------"
         cd /workspace/repository
-        ls -la
+        git branch --set-upstream main origin/main
         git checkout main
-        git checkout -b test-deploy-k8s
         git status && git add .
         git commit -m "chore(deploy): updating image tag to '$MERGE_COMMIT_HASH'"
-        git push -u origin test-deploy-k8s
+        git push -u origin main
       securityContext:
         privileged: true
