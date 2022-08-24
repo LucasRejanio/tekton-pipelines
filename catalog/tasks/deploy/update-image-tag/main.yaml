@@ -65,13 +65,14 @@ spec:
 
         echo "----------- Configurando chave ssh -----------"
         #!/bin/bash
+        mkdir ~/.ssh
         cp /workspace/ssh-directory/id_rsa /tmp
+        cp /workspace/ssh-directory/known_hosts ~/.ssh 
         chmod 400 /tmp/id_rsa
         eval $(ssh-agent)
         ssh-add /tmp/id_rsa
         ssh-add -L
         mkdir ~/.ssh
-        echo "bitbucket.org ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAubiN81eDcafrgMeLzaFPsw2kNvEcqTKl/VqLat/MaB33pZy0y3rJZtnqwR2qOOvbwKZYKiEO1O6VqNEBxKvJJelCq0dTXWT5pbO2gDXC6h6QDXCaHo6pOHGPUy+YBaGQRGuSusMEASYiWunYN0vCAI8QaXnWMXNMdFP3jHAJH0eDsoiGnLPBlBp4TNm6rYI74nMzgz3B9IikW4WVK+dc8KZJZWYjAuORU3jc1c/NPskD2ASinf8v3xnfXeukU0sJ5N6m5E8VLjObPEO+mN2t/FZTMZLiFqPWc/ALSqnMnnhwrNi2rbfg/rd/IpL8Le3pSBne8+seeFVBoGqzHM9yXw==" > ~/.ssh/known_hosts
         
         if [ $? -eq 0 ]
         then
@@ -87,7 +88,7 @@ spec:
         git clone git@bitbucket.org:will-bank/core-pix-account-validate-api.git
         cd core-pix-account-validate-api
         git checkout test/tekton-pipeline
-        echo "hello" > test
+        rm test
         git add .
         git commit -a -m "chore(deploy): updating image tag to '$MERGE_COMMIT_HASH'"
         git push 
