@@ -81,7 +81,7 @@ spec:
 
         echo "----------- Subindo modificação para o repositório git -----------"
         cd /workspace/repository
-        git branch --set-upstream main origin/main
+        git branch --set-upstream-to main origin/main
         git checkout main
         git status && git add .
         git commit -m "chore(deploy): updating image tag to '$MERGE_COMMIT_HASH'"
