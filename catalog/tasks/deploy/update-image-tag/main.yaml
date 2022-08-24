@@ -61,22 +61,29 @@ spec:
         value: $(workspaces.basic-auth.path)
       script: |
         echo "----------- Instalando dependencias -----------"
-        apk add bash sed git
+        apk add bash git openssh
 
         #!/bin/bash
         
         echo "----------- Configurando chave ssh -----------"
         cd /workspace/ssh-directory
 
-        cp "${WORKSPACE_BASIC_AUTH_DIRECTORY_PATH}/.git-credentials" "/tekton/home/.git-credentials"
-        cp "${WORKSPACE_BASIC_AUTH_DIRECTORY_PATH}/.gitconfig" "/tekton/home/.gitconfig"
-        chmod 400 "/tekton/home/.git-credentials"
-        chmod 400 "/tekton/home/.gitconfig"
-
-        echo "Chave ssh configurada com sucesso!"
+        chmod 400 id_rsa
+        eval $(ssh-agent)
+        ssh-add id_rsa
+        
+         if [ $? -eq 0 ]
+        then
+            echo "Chave ssh configurada com sucesso!"
+        else
+            echo "Falha ao configurar chave ssh"
+            exit 1
+        fi
 
         echo "----------- Subindo modificação para o repositório git -----------"
         cd ../repository
-        git add . && git commit -m "chore(deploy): updating image tag to '$MERGE_COMMIT_HASH'"
+        git add . \
+        && git commit -m "chore(deploy): updating image tag to '$MERGE_COMMIT_HASH'" \
+        && git push origin main
       securityContext:
         privileged: true
