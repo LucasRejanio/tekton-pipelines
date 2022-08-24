@@ -80,7 +80,7 @@ spec:
         fi
 
         echo "----------- Subindo modificação para o repositório git -----------"
-        cd ../repository
+        cd /workspace/repository
         git add . \
         && git commit -m "chore(deploy): updating image tag to '$MERGE_COMMIT_HASH'" \
         && git push origin main
