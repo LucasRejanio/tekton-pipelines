@@ -81,7 +81,7 @@ spec:
 
         echo "----------- Subindo modificação para o repositório git -----------"
         cd /workspace/repository
-        git branch
+        ls -la
         git checkout main
         git checkout -b test-deploy-k8s
         git status && git add .
