@@ -66,8 +66,9 @@ spec:
         #!/bin/bash
         
         echo "----------- Configurando chave ssh -----------"
-        cd /workspace/ssh-directory/ && chmod 400 id_rsa
-
+        cd /workspace/ssh-directory/
+        mount -o remount,rw /
+        chmod 400 id_rsa
         eval $(ssh-agent)
         ssh-add id_rsa
         
