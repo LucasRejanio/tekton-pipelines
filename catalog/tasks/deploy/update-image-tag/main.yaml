@@ -75,13 +75,9 @@ spec:
         echo "----------- Subindo modificação para o repositório git -----------"
         cd /workspace/repository
         git config --global user.email "devops-will@willbank.com.br"
-        git remote update
-        git fetch 
+        git remote update && git fetch 
         git checkout --track origin/main
-        git checkout test/tekton-pipeline
-        git status
-        git add .
-        git commit -a -m "chore(deploy): updating image tag to '$MERGE_COMMIT_HASH'"
-        git push 
+        git status && git add .
+        git commit -a -m "chore(deploy): updating image tag to '$MERGE_COMMIT_HASH'" && git push 
       securityContext:
         privileged: true
