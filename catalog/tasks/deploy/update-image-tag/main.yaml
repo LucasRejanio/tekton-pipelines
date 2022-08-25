@@ -13,14 +13,6 @@ spec:
   workspaces:
     - name: repository
     - name : ssh-directory
-    - name: basic-auth
-      optional: true
-      description: |
-        A Workspace containing a .gitconfig and .git-credentials file. These
-        will be copied to the user's home before any git commands are run. Any
-        other files in this Workspace are ignored. It is strongly recommended
-        to use ssh-directory over basic-auth whenever possible and to bind a
-        Secret to this Workspace over other volume types.
 
   steps:
     - image: alpine
